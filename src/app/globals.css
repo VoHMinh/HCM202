@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+:root {
+  /* Nền sơn mài tối */
+  --bg-900: #0B0A09;      /* Nền vóc đen sâu nhất */
+  --bg-800: #14110E;      /* Nền panel trũng */
+  --bg-700: #1F1A15;      /* Nền nổi bậc nhẹ */
+  --line:   rgba(245, 239, 227, 0.12); /* Đường viền 1px mỏng tối giản */
+  --line-strong: rgba(245, 239, 227, 0.25);
+
+  /* Mực & chữ ngà */
+  --ink-100: #F5EFE3;     /* Chữ chính, ngà sách cổ */
+  --ink-70:  rgba(245, 239, 227, 0.72);
+  --ink-45:  rgba(245, 239, 227, 0.45);
+  --ink-20:  rgba(245, 239, 227, 0.18);
+
+  /* Điểm nhấn theo giá trị */
+  --doclap:        #C8102E;    /* Đỏ son trầm */
+  --doclap-glow:   #FF4D62;    /* Đỏ son phát sáng */
+  --tudo:          #7FC8D8;    /* Xanh bồ câu / ngọc lam */
+  --tudo-glow:     #B8E6F0;    /* Lam phát quang */
+  --hanhphuc:      #9CC45A;    /* Xanh mạ non */
+  --hanhphuc-glow: #C9E88A;    /* Mạ non bừng sáng */
+
+  --gold:          #E3B341;    /* Vàng kim / hoàn thành */
+  --gold-glow:     #FFE380;
+  --locked:        #4A4038;    /* Xám then khóa */
+
+  /* Thang font chữ biên tập editorial (Fluid Typography) */
+  --font-display: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+  --font-quote:   'Lora', serif;
+
+  --step--1: clamp(0.8rem, 0.75rem + 0.2vw, 0.92rem);
+  --step-0:  clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
+  --step-1:  clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --step-2:  clamp(1.8rem, 1.5rem + 1.6vw, 3rem);
+  --step-3:  clamp(2.6rem, 2rem + 3.8vw, 5.5rem); /* Đại tự tiêu đề */
+
+  /* Tọa độ chuột cho spotlight */
+  --cursor-x: 50vw;
+  --cursor-y: 50vh;
+}
+
+@theme {
+  --color-bg-900: #0B0A09;
+  --color-bg-800: #14110E;
+  --color-bg-700: #1F1A15;
+  --color-line: rgba(245, 239, 227, 0.12);
+  --color-line-strong: rgba(245, 239, 227, 0.25);
+
+  --color-ink-100: #F5EFE3;
+  --color-ink-70: rgba(245, 239, 227, 0.72);
+  --color-ink-45: rgba(245, 239, 227, 0.45);
+  --color-ink-20: rgba(245, 239, 227, 0.18);
+
+  --color-doclap: #C8102E;
+  --color-doclap-glow: #FF4D62;
+  --color-tudo: #7FC8D8;
+  --color-tudo-glow: #B8E6F0;
+  --color-hanhphuc: #9CC45A;
+  --color-hanhphuc-glow: #C9E88A;
+
+  --color-gold: #E3B341;
+  --color-gold-glow: #FFE380;
+  --color-locked: #4A4038;
+
+  --font-sans: var(--font-display);
+  --font-serif: var(--font-quote);
+}
+
+/* Base resets & typography */
+html, body {
+  background-color: var(--bg-900);
+  color: var(--ink-100);
+  font-family: var(--font-display);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(200, 16, 46, 0.4);
+  color: #FFF;
+}
+
+/* Editorial 12-column grid container */
+.grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 32px);
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(24px, 5vw, 80px);
+  padding-right: clamp(24px, 5vw, 80px);
+}
+
+/* Subtle line separator (thay cho box viền) */
+.editorial-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+  width: 100%;
+}
+
+.editorial-line-left {
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-strong), transparent);
+  width: 100%;
+}
+
+/* Texture giấy dó & sơn mài siêu nhẹ */
+.lacquer-texture {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(31, 26, 21, 0.6) 0%, transparent 75%),
+    radial-gradient(circle at 100% 100%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+}
+
+.paper-grain {
+  background-image: radial-gradient(rgba(245, 239, 227, 0.025) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* Spotlight overlay */
+.spotlight-mask {
+  mask-image: radial-gradient(circle 380px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.15) 75%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle 380px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.15) 75%, transparent 100%);
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-900);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 239, 227, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 239, 227, 0.35);
+}

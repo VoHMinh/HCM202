@@ -1,0 +1,1626 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1a1510">
+  <meta
+    name="description"
+    content="Ba giá trị cốt lõi trong tư tưởng Hồ Chí Minh: Độc lập – Tự do – Hạnh phúc."
+  >
+  <title>Ba Giá Trị — Tư Tưởng Hồ Chí Minh</title>
+  <style>
+    :root {
+      --ink: #1a1510;
+      --ink-deep: #120e0a;
+      --ink-soft: #2a2318;
+      --gold: #c3a47b;
+      --gold-bright: #dbc39c;
+      --text: #eee2ca;
+      --muted: #c5b79e;
+      --doclap: #8b1a1a;
+      --doclap-soft: #b22020;
+      --tudo: #1a3a5c;
+      --tudo-soft: #2a5a8c;
+      --hanhphuc: #2d5a27;
+      --hanhphuc-soft: #4a8a42;
+      --paper: #eadfc7;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+        Baskerville, "Times New Roman", serif;
+      --ease: cubic-bezier(.2, .78, .2, 1);
+      --mx: 0px;
+      --my: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--ink);
+    }
+
+    body {
+      min-height: 100svh;
+      overflow: hidden;
+      color: var(--text);
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+      cursor: default;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .stage {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      min-height: 100svh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 49% 84%, rgba(139, 26, 26, .15), transparent 34%),
+        radial-gradient(circle at 14% 4%, rgba(26, 58, 92, .10), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(45, 90, 39, .08), transparent 32%),
+        linear-gradient(180deg, #2a2318 0%, var(--ink) 48%, #120e0a 100%);
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      z-index: 30;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 26px 3.2vw;
+      pointer-events: none;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-size: clamp(18px, 1.8vw, 26px);
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: -.035em;
+      line-height: 1;
+      text-decoration: none;
+      pointer-events: auto;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 0.55em;
+      letter-spacing: .08em;
+      font-style: normal;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    .icon-button,
+    .ticket-button,
+    .close-button,
+    .pill,
+    .book-card {
+      border: 0;
+      outline: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .icon-button,
+    .ticket-button {
+      height: 50px;
+      border: 1px solid rgba(195, 164, 123, .22);
+      background: var(--paper);
+      color: #30291f;
+      box-shadow: 0 8px 26px rgba(18, 14, 10, .18);
+      transition: transform 240ms var(--ease), background-color 240ms ease;
+    }
+
+    .icon-button {
+      display: grid;
+      width: 50px;
+      place-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .ticket-button {
+      display: inline-grid;
+      min-width: 138px;
+      padding: 0 25px;
+      place-items: center;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .icon-button:hover,
+    .ticket-button:hover {
+      transform: translateY(-3px);
+      background: #f7edd9;
+    }
+
+    .icon-button:focus-visible,
+    .ticket-button:focus-visible,
+    .close-button:focus-visible,
+    .pill:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 4px;
+    }
+
+    /* ── HERO WORD ── */
+    .hero-word {
+      position: absolute;
+      z-index: 1;
+      top: 11.5vh;
+      left: 50%;
+      margin: 0;
+      color: var(--gold);
+      font-size: clamp(140px, 18vw, 280px);
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: -.085em;
+      line-height: .84;
+      white-space: nowrap;
+      transform: translate3d(calc(-50% + var(--mx) * -.12), calc(var(--my) * -.12), 0);
+      transition: opacity 700ms ease, filter 700ms ease, transform 900ms var(--ease);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      position: absolute;
+      z-index: 5;
+      inset: 0;
+      perspective: 1400px;
+      transform-style: flat;
+    }
+
+    /* ── BOOK CARD ── */
+    .book-card {
+      --hover-y: 0px;
+      --local-x: 0px;
+      --local-y: 0px;
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--w);
+      aspect-ratio: .672 / 1;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      transform:
+        translate3d(
+          calc(-50% + var(--local-x)),
+          calc(var(--hover-y) + var(--local-y)),
+          0
+        )
+        rotate(var(--r))
+        rotateY(var(--yaw));
+      transform-style: preserve-3d;
+      transition:
+        left 1100ms var(--ease),
+        top 1100ms var(--ease),
+        width 1100ms var(--ease),
+        opacity 500ms ease,
+        filter 500ms ease,
+        transform 520ms var(--ease);
+      will-change: transform, left, top, width;
+    }
+
+    /* Position the 3 books */
+    .book-card[data-book="doclap"] {
+      --x: 23.2%;
+      --y: 40.5%;
+      --w: min(30.5vw, 435px);
+      --r: -8deg;
+      --yaw: -7deg;
+      z-index: 1;
+    }
+
+    .book-card[data-book="tudo"] {
+      --x: 50%;
+      --y: 32.2%;
+      --w: min(33vw, 470px);
+      --r: .8deg;
+      --yaw: -3deg;
+      z-index: 3;
+    }
+
+    .book-card[data-book="hanhphuc"] {
+      --x: 77%;
+      --y: 42%;
+      --w: min(30.5vw, 435px);
+      --r: 8deg;
+      --yaw: 7deg;
+      z-index: 2;
+    }
+
+    .book-card:hover,
+    .book-card[data-hovered="true"] {
+      --hover-y: -28px;
+      z-index: 8;
+    }
+
+    .book {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 800ms var(--ease);
+    }
+
+    .book-card:hover .book {
+      transform: scale(1.035) rotateX(-1.5deg);
+    }
+
+    .book-back,
+    .page-block,
+    .page-fan,
+    .front-cover,
+    .book-shadow {
+      position: absolute;
+      inset: 0;
+      border-radius: 3px 7px 7px 3px;
+    }
+
+    .book-shadow {
+      z-index: -2;
+      inset: 5% -4% -2% 4%;
+      border-radius: 12px;
+      background: rgba(18, 12, 6, .75);
+      filter: blur(22px);
+      opacity: .72;
+      transform: translate3d(18px, 28px, -60px);
+    }
+
+    .book-back {
+      z-index: 0;
+      background: var(--cover-color);
+      box-shadow: 0 18px 30px rgba(18, 12, 6, .4);
+      transform: translate3d(7px, 1px, -26px);
+    }
+
+    .page-block {
+      z-index: 1;
+      inset: 1.7% 1.4% 1.7% 3.8%;
+      overflow: visible;
+      border: 1px solid rgba(84, 68, 45, .25);
+      border-radius: 2px 5px 5px 2px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(105, 86, 58, .14) 0,
+          rgba(105, 86, 58, .14) 1px,
+          transparent 1px,
+          transparent 2.8px
+        ),
+        linear-gradient(90deg, #cfc1a4 0%, #f2e8d2 14%, #e7dac0 87%, #cbb894 100%);
+      box-shadow: 7px 5px 16px rgba(31, 23, 13, .26);
+      transform: translate3d(7px, 1px, -12px);
+      transition: transform 1100ms var(--ease), inset 1100ms var(--ease);
+    }
+
+    .page-block::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      right: 1px;
+      left: 1px;
+      height: 8px;
+      border-radius: 2px 4px 0 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #d9cbae 0,
+          #d9cbae 2px,
+          #f2e7cf 2px,
+          #f2e7cf 5px
+        );
+      transform: skewX(-8deg);
+      transform-origin: bottom left;
+    }
+
+    .page-block::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -7px;
+      width: 8px;
+      height: 100%;
+      border-radius: 0 4px 4px 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #cbb995 0,
+          #cbb995 1px,
+          #eee3cd 1px,
+          #eee3cd 3px
+        );
+      box-shadow: 3px 2px 7px rgba(35, 26, 14, .18);
+      transform: skewY(-2deg);
+      transform-origin: left center;
+    }
+
+    .page-fan {
+      z-index: 2;
+      inset: 2.4% 2% 2.4% 4.3%;
+      pointer-events: none;
+      transform-style: preserve-3d;
+    }
+
+    .page-fan i {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border: 1px solid rgba(102, 83, 55, .22);
+      border-radius: 2px 5px 5px 2px;
+      background:
+        linear-gradient(90deg, rgba(116, 91, 56, .22), transparent 9%),
+        repeating-linear-gradient(
+          0deg,
+          #f0e6d0 0,
+          #f0e6d0 2px,
+          #e6d8ba 2px,
+          #e6d8ba 3px
+        );
+      box-shadow: 3px 5px 10px rgba(37, 28, 16, .08);
+      opacity: 0;
+      transform: translate3d(0, 0, 0) rotateY(0);
+      transform-origin: 1.5% center;
+      transition: opacity 500ms ease, transform 1200ms var(--ease);
+    }
+
+    .front-cover {
+      z-index: 3;
+      overflow: hidden;
+      border: 1px solid rgba(238, 224, 194, .18);
+      background-color: var(--cover-color);
+      background-image: var(--cover, none);
+      background-position: center;
+      background-size: cover;
+      box-shadow:
+        0 25px 38px rgba(18, 12, 6, .4),
+        inset -12px 0 18px rgba(0, 0, 0, .16),
+        inset 4px 0 9px rgba(255, 255, 255, .10);
+      transform: translate3d(0, 0, 12px);
+      transform-origin: 1.5% center;
+      transform-style: preserve-3d;
+      transition: transform 1200ms var(--ease), box-shadow 600ms ease;
+    }
+
+    .front-cover::before {
+      content: "";
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 5.5%;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, .38),
+          rgba(255, 255, 255, .06) 35%,
+          rgba(0, 0, 0, .10) 75%,
+          transparent
+        );
+      mix-blend-mode: multiply;
+      opacity: .85;
+    }
+
+    .front-cover::after {
+      content: "";
+      position: absolute;
+      z-index: 4;
+      inset: 0;
+      border: 3px solid rgba(255, 255, 255, .04);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    /* ── COVER CONTENT ── */
+    .cover-copy {
+      position: absolute;
+      z-index: 2;
+      inset: 5.8% 7.5% 5.5%;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      align-content: start;
+      color: var(--cover-ink);
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(241, 226, 196, .20);
+    }
+
+    .cover-roman {
+      font-size: clamp(10px, .95vw, 14px);
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: .12em;
+      color: var(--cover-ink-soft, currentColor);
+      opacity: .7;
+    }
+
+    .cover-kicker {
+      font-size: clamp(7px, .65vw, 10px);
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-top: 2%;
+    }
+
+    .cover-title {
+      margin-top: 2.2%;
+      font-size: clamp(28px, 3.8vw, 58px);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: .88;
+    }
+
+    .cover-subtitle {
+      margin-top: 3%;
+      font-size: clamp(9px, .9vw, 13px);
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: .03em;
+      line-height: 1.4;
+    }
+
+    .cover-emblem {
+      align-self: center;
+      margin: 4% auto;
+      width: 22%;
+      opacity: .65;
+    }
+
+    .cover-emblem svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .cover-footer {
+      align-self: end;
+      padding-top: 3%;
+      border-top: 1px solid currentColor;
+      font-size: clamp(6px, .55vw, 8px);
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .65;
+    }
+
+    /* Per-book cover colors */
+    .book-card[data-book="doclap"] {
+      --cover-color: #6b1010;
+      --cover-ink: #f8e8c8;
+      --cover-ink-soft: #ffcfcf;
+    }
+
+    .book-card[data-book="tudo"] {
+      --cover-color: #0f2a4a;
+      --cover-ink: #d8e8f8;
+      --cover-ink-soft: #a8c8e8;
+    }
+
+    .book-card[data-book="hanhphuc"] {
+      --cover-color: #1a3d14;
+      --cover-ink: #d8f0d0;
+      --cover-ink-soft: #a8d8a0;
+    }
+
+    /* ── COVER TEXTURE ── */
+    .book-card[data-book="doclap"] .front-cover {
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(180, 40, 40, .4), transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(100, 10, 10, .5), transparent 50%),
+        linear-gradient(160deg, #8b1a1a 0%, #5c0e0e 40%, #3d0808 100%);
+    }
+
+    .book-card[data-book="tudo"] .front-cover {
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(40, 80, 150, .4), transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(10, 30, 80, .5), transparent 50%),
+        linear-gradient(160deg, #1a3a8b 0%, #0e245c 40%, #081840 100%);
+    }
+
+    .book-card[data-book="hanhphuc"] .front-cover {
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(60, 130, 50, .4), transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(20, 70, 15, .5), transparent 50%),
+        linear-gradient(160deg, #2d5a1a 0%, #1a3d0e 40%, #0f2808 100%);
+    }
+
+    /* ── OPEN BADGE ── */
+    .open-badge {
+      position: absolute;
+      z-index: 6;
+      top: 47%;
+      left: 50%;
+      display: grid;
+      width: 94px;
+      height: 66px;
+      place-items: center;
+      color: #2a2016;
+      background: #efe3ca;
+      clip-path: polygon(
+        3% 22%, 10% 8%, 25% 7%, 38% 1%, 51% 6%, 66% 2%,
+        77% 10%, 92% 11%, 96% 26%, 100% 39%, 95% 52%, 99% 67%,
+        88% 79%, 83% 93%, 68% 94%, 55% 100%, 42% 94%, 27% 98%,
+        17% 88%, 4% 84%, 5% 69%, 0 57%, 5% 43%, 1% 34%
+      );
+      font-size: 10px;
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: .1em;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.76) rotate(-3deg);
+      transition: opacity 260ms ease, transform 420ms var(--ease), filter 260ms ease;
+      pointer-events: none;
+    }
+
+    .book-card:hover .open-badge,
+    .book-card[data-hovered="true"] .open-badge,
+    .book-card:focus-visible .open-badge {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+    }
+
+    .book-card:focus-visible {
+      outline: 0;
+    }
+
+    /* ── DETAIL PANEL ── */
+    .detail-panel {
+      position: absolute;
+      z-index: 12;
+      top: 14.5%;
+      right: 4.5%;
+      width: min(47.5%, 650px);
+      opacity: 0;
+      transition: opacity 520ms ease 280ms;
+      pointer-events: none;
+    }
+
+    .detail-title {
+      margin: 0 0 6px;
+      color: var(--accent, var(--gold));
+      font-size: clamp(52px, 5.7vw, 82px);
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: -.055em;
+      line-height: .92;
+    }
+
+    .detail-subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: clamp(13px, 1.1vw, 16px);
+      font-style: italic;
+      letter-spacing: .05em;
+    }
+
+    .detail-description {
+      max-width: 600px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.28vw, 17px);
+      line-height: 1.64;
+    }
+
+    .detail-scroll {
+      max-height: clamp(340px, calc(100svh - 450px), 600px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 0 22px 76px 0;
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 calc(100% - 76px),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 calc(100% - 76px),
+        transparent 100%
+      );
+      scrollbar-color: rgba(195, 164, 123, .6) rgba(60, 50, 35, .35);
+      scrollbar-width: thin;
+    }
+
+    .detail-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .detail-scroll::-webkit-scrollbar-track {
+      border-radius: 999px;
+      background: rgba(60, 50, 35, .35);
+    }
+
+    .detail-scroll::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(195, 164, 123, .6);
+    }
+
+    .doc-section {
+      margin-top: 26px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(220, 200, 164, .18);
+    }
+
+    .doc-label {
+      margin: 0 0 14px;
+      color: var(--accent, var(--gold));
+      font-size: 11px;
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .doc-steps {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: guide-step;
+    }
+
+    .doc-steps li {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      counter-increment: guide-step;
+    }
+
+    .doc-steps li::before {
+      content: counter(guide-step, decimal-leading-zero);
+      padding-top: 2px;
+      color: rgba(195, 164, 123, .6);
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: .08em;
+    }
+
+    .doc-step-copy {
+      display: grid;
+      gap: 4px;
+    }
+
+    .doc-step-copy strong {
+      color: #e8dcc4;
+      font-size: 15px;
+      font-style: italic;
+      font-weight: 650;
+    }
+
+    .doc-step-copy span,
+    .doc-review {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .quote-block {
+      padding: 16px 18px;
+      border: 1px solid rgba(220, 200, 164, .15);
+      border-left: 3px solid var(--accent, var(--gold));
+      border-radius: 0 10px 10px 0;
+      background: rgba(40, 35, 25, .55);
+      font-style: italic;
+      color: #e0d4ba;
+      font-size: 14px;
+      line-height: 1.65;
+      margin-top: 12px;
+    }
+
+    .quote-source {
+      display: block;
+      margin-top: 8px;
+      font-size: 11px;
+      font-style: normal;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: .7;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: max-content 1px max-content 1fr;
+      align-items: center;
+      gap: clamp(16px, 2vw, 27px);
+      margin-top: 22px;
+      color: var(--accent, var(--gold));
+    }
+
+    .stars {
+      display: flex;
+      gap: 8px;
+      font-size: 22px;
+      letter-spacing: .02em;
+      line-height: 1;
+    }
+
+    .meta-divider {
+      width: 1px;
+      height: 26px;
+      background: rgba(220, 200, 164, .24);
+    }
+
+    .review-source,
+    .year {
+      color: #bcae92;
+      font-size: 17px;
+      font-style: italic;
+      font-weight: 650;
+    }
+
+    .year {
+      justify-self: end;
+    }
+
+    .detail-rule {
+      height: 1px;
+      margin: 10px 0 22px;
+      border: 0;
+      background: rgba(220, 200, 164, .20);
+    }
+
+    /* ── BOTTOM DOCK ── */
+    .bottom-dock {
+      position: fixed;
+      z-index: 24;
+      right: 4.5%;
+      bottom: 28px;
+      width: min(47.5%, 650px);
+    }
+
+    .bottom-dock .meta-row {
+      margin: 0 10px;
+    }
+
+    .bottom-dock .detail-rule {
+      margin: 10px 8px 14px;
+    }
+
+    .action-rail {
+      --action-inset: 8px;
+      display: flex;
+      align-items: center;
+      gap: var(--action-inset);
+      width: 100%;
+      padding: var(--action-inset);
+      border: 1px solid rgba(220, 200, 164, .08);
+      border-radius: 32px;
+      background: rgba(50, 42, 30, .90);
+      box-shadow: 0 16px 32px rgba(18, 12, 6, .22);
+      backdrop-filter: blur(12px);
+    }
+
+    .pill {
+      display: inline-flex;
+      flex: 1 1 0;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 58px;
+      padding: 0 18px;
+      border-radius: 24px;
+      background: var(--accent, var(--gold));
+      color: #2e261d;
+      cursor: pointer;
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: transform 220ms var(--ease), filter 220ms ease, background 220ms ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .pill.icon-only {
+      flex: 0 0 58px;
+      width: 58px;
+      min-width: 58px;
+      padding: 0;
+      background: rgba(80, 68, 48, .8);
+      color: #f1e6cf;
+    }
+
+    .pill.icon-only svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      transition: fill 220ms ease, stroke 220ms ease;
+    }
+
+    .pill.icon-only[aria-pressed="true"] svg {
+      fill: var(--accent, var(--gold));
+      stroke: var(--accent, var(--gold));
+    }
+
+    /* ── CLOSE BUTTON ── */
+    .close-button {
+      position: absolute;
+      z-index: 52;
+      top: 30px;
+      left: 50%;
+      display: grid;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 50%;
+      background: rgba(30, 24, 16, .28);
+      color: var(--paper);
+      cursor: pointer;
+      font-size: 26px;
+      font-weight: 200;
+      opacity: 0;
+      transform: translate3d(-50%, -18px, 0) rotate(-45deg);
+      transition: opacity 400ms ease, transform 620ms var(--ease), background 220ms ease;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+
+    .close-button:hover {
+      background: rgba(255, 255, 255, .08);
+    }
+
+    /* ── PETAL FIELD (Vietnamese lotus theme) ── */
+    .petal-field {
+      position: absolute;
+      z-index: 9;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 700ms ease 250ms;
+      pointer-events: none;
+    }
+
+    .petal {
+      --petal-size: 20px;
+      position: absolute;
+      top: -10vh;
+      left: var(--petal-x);
+      width: var(--petal-size);
+      height: var(--petal-size);
+      opacity: .85;
+      transform-style: preserve-3d;
+      animation: petalFall var(--petal-duration) linear var(--petal-delay) infinite;
+    }
+
+    .petal i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 44%;
+      height: 62%;
+      border-radius: 70% 70% 55% 55%;
+      background:
+        radial-gradient(circle at 50% 80%, rgba(180, 20, 20, .8) 0 10%, transparent 11%),
+        linear-gradient(180deg, #f5c8c0 0%, #e8a0a0 60%, #c87080 100%);
+      box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .4);
+      transform-origin: 50% 100%;
+    }
+
+    .petal i:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); }
+    .petal i:nth-child(2) { transform: translate(-50%, -100%) rotate(72deg); }
+    .petal i:nth-child(3) { transform: translate(-50%, -100%) rotate(144deg); }
+    .petal i:nth-child(4) { transform: translate(-50%, -100%) rotate(216deg); }
+    .petal i:nth-child(5) { transform: translate(-50%, -100%) rotate(288deg); }
+
+    .petal::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18%;
+      height: 18%;
+      border-radius: 50%;
+      background: #d9b46f;
+      box-shadow: 0 0 0 2px rgba(120, 80, 40, .18);
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes petalFall {
+      0%   { transform: translate3d(0, -10vh, 0) rotateX(18deg) rotateZ(var(--petal-r)); }
+      32%  { transform: translate3d(32px, 34vh, 0) rotateX(154deg) rotateZ(calc(var(--petal-r) + 118deg)); }
+      68%  { transform: translate3d(-26px, 78vh, 0) rotateX(284deg) rotateZ(calc(var(--petal-r) + 264deg)); }
+      100% { transform: translate3d(18px, 122vh, 0) rotateX(430deg) rotateZ(calc(var(--petal-r) + 418deg)); }
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      z-index: 80;
+      bottom: 22px;
+      left: 50%;
+      max-width: calc(100vw - 32px);
+      padding: 12px 20px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 999px;
+      background: rgba(28, 22, 14, .90);
+      color: var(--paper);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, .22);
+      font-size: 13px;
+      font-weight: 650;
+      opacity: 0;
+      transform: translate(-50%, 20px);
+      transition: opacity 250ms ease, transform 350ms var(--ease);
+      pointer-events: none;
+      backdrop-filter: blur(12px);
+    }
+
+    .toast[data-show="true"] {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* ── DETAIL MODE STATES ── */
+    [data-mode="detail"] .hero-word {
+      opacity: 0;
+      filter: blur(16px);
+      transform: translate3d(-50%, -34px, 0) scale(.9);
+    }
+
+    [data-mode="detail"] .book-card:not(.selected) {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translate3d(-50%, 60vh, -200px) rotate(var(--r)) scale(.8);
+      pointer-events: none;
+    }
+
+    [data-mode="detail"] .book-card.selected {
+      --hover-y: 0px;
+      --local-x: 0px;
+      --local-y: 0px;
+      left: 27%;
+      top: 50%;
+      width: min(30vw, 415px);
+      z-index: 14;
+      cursor: default;
+      transform: translate3d(-50%, -50%, 0) rotate(-3deg);
+      pointer-events: none;
+    }
+
+    [data-mode="detail"] .book-card.selected .book {
+      transform: scale(1.02) rotateX(0deg) rotateY(-5deg);
+      transition-duration: 170ms;
+    }
+
+    [data-mode="detail"] .book-card.selected .front-cover {
+      box-shadow:
+        25px 26px 44px rgba(18, 12, 6, .35),
+        inset -12px 0 18px rgba(0, 0, 0, .13),
+        inset 4px 0 9px rgba(255, 255, 255, .08);
+      transform: translate3d(0, 0, 18px) rotateY(-29deg);
+    }
+
+    [data-mode="detail"] .book-card.selected .page-block {
+      inset: 1.9% 1.5% 1.9% 4.4%;
+      transform: translate3d(6px, 1px, -11px);
+    }
+
+    [data-mode="detail"] .book-card.selected .page-fan i {
+      opacity: 1;
+    }
+
+    [data-mode="detail"] .book-card.selected .page-fan i:nth-child(1) {
+      transform: translate3d(0, 0, 10px) rotateY(-4deg);
+    }
+
+    [data-mode="detail"] .book-card.selected .page-fan i:nth-child(2) {
+      transform: translate3d(0, 0, 11px) rotateY(-8deg);
+    }
+
+    [data-mode="detail"] .book-card.selected .page-fan i:nth-child(3) {
+      transform: translate3d(0, 0, 12px) rotateY(-12deg);
+    }
+
+    [data-mode="detail"] .book-card.selected .page-fan i:nth-child(4) {
+      transform: translate3d(0, 0, 13px) rotateY(-16deg);
+    }
+
+    [data-mode="detail"] .book-card.selected .open-badge {
+      opacity: 0;
+    }
+
+    [data-mode="detail"] .detail-panel {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    [data-mode="gallery"] .detail-panel {
+      transition-duration: 160ms;
+      transition-delay: 0ms;
+    }
+
+    [data-mode="detail"] .close-button {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0) rotate(0);
+      pointer-events: auto;
+    }
+
+    [data-mode="detail"] .petal-field {
+      opacity: 1;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .stage { min-height: 100svh; overflow: hidden; }
+      .topbar { padding: 20px; }
+      .icon-button, .ticket-button { height: 44px; }
+      .icon-button { width: 44px; }
+
+      .hero-word { top: 17vh; font-size: clamp(100px, 24vw, 200px); }
+
+      .book-card[data-book="doclap"] { --x: 14%; --y: 41%; --w: min(49vw, 360px); }
+      .book-card[data-book="tudo"]   { --x: 50%; --y: 35%; --w: min(54vw, 395px); }
+      .book-card[data-book="hanhphuc"] { --x: 87%; --y: 42%; --w: min(49vw, 360px); }
+
+      [data-mode="detail"] .stage { min-height: calc(100svh + 760px); overflow-y: auto; }
+      [data-mode="detail"] .book-card.selected { left: 50%; top: 50svh; width: min(58vw, 340px); }
+
+      .detail-panel { top: calc(100svh + 48px); right: 7%; left: 7%; width: auto; padding-bottom: 130px; }
+      .detail-scroll { max-height: min(500px, calc(100svh - 310px)); }
+      .detail-title { font-size: clamp(40px, 9vw, 62px); }
+
+      .bottom-dock { right: 20px; bottom: 20px; left: 20px; width: auto; }
+      .action-rail { overflow-x: auto; scrollbar-width: none; }
+      .action-rail::-webkit-scrollbar { display: none; }
+      .pill { min-width: 120px; }
+      .pill.icon-only { min-width: 58px; }
+    }
+
+    @media (max-width: 560px) {
+      .hero-word { top: 22vh; font-size: 32vw; }
+
+      .book-card[data-book="doclap"]   { --x: 4%;  --y: 45%; --w: 66vw; }
+      .book-card[data-book="tudo"]     { --x: 50%; --y: 40%; --w: 72vw; }
+      .book-card[data-book="hanhphuc"] { --x: 96%; --y: 46%; --w: 66vw; }
+
+      .detail-panel { right: 20px; left: 20px; }
+      .pill { min-width: 0; min-height: 50px; padding: 0 10px; font-size: 12px; }
+      .pill.icon-only { flex-basis: 50px; width: 50px; min-width: 50px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body data-mode="gallery">
+  <main class="stage" aria-label="Ba giá trị cốt lõi trong tư tưởng Hồ Chí Minh">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Ba Giá Trị">
+        Ba Giá Trị
+        <span>Tư tưởng Hồ Chí Minh · HCM202</span>
+      </a>
+      <div class="nav-actions">
+        <button class="ticket-button" type="button" data-toast="Độc Lập · Tự Do · Hạnh Phúc — Ba giá trị bất diệt">Ba Giá Trị</button>
+      </div>
+    </header>
+
+    <!-- HERO WORD -->
+    <h1 class="hero-word" aria-hidden="true">Hồ Chí Minh</h1>
+
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Ba giá trị trong tư tưởng Hồ Chí Minh">
+
+      <!-- BOOK 1: ĐỘC LẬP -->
+      <button
+        class="book-card"
+        type="button"
+        data-book="doclap"
+        aria-label="Mở chi tiết về Độc Lập"
+      >
+        <span class="book" aria-hidden="true">
+          <span class="book-shadow"></span>
+          <span class="book-back"></span>
+          <span class="page-block"></span>
+          <span class="page-fan">
+            <i></i><i></i><i></i><i></i>
+          </span>
+          <span class="front-cover">
+            <span class="cover-copy">
+              <span class="cover-roman">I</span>
+              <span class="cover-kicker">Giá trị thứ nhất</span>
+              <strong class="cover-title">Độc<br>Lập</strong>
+              <span class="cover-subtitle">Chủ quyền dân tộc<br>là thiêng liêng bất khả xâm phạm</span>
+              <span class="cover-emblem">
+                <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="30" cy="30" r="24" stroke="rgba(248,232,200,.4)" stroke-width="1"/>
+                  <path d="M30 10 L33 22 L46 22 L36 30 L39 42 L30 34 L21 42 L24 30 L14 22 L27 22 Z" fill="rgba(248,232,200,.5)"/>
+                </svg>
+              </span>
+              <span class="cover-footer">Hồ Chí Minh Toàn Tập · 1919–1945</span>
+            </span>
+          </span>
+        </span>
+        <span class="open-badge" aria-hidden="true">Mở</span>
+      </button>
+
+      <!-- BOOK 2: TỰ DO -->
+      <button
+        class="book-card"
+        type="button"
+        data-book="tudo"
+        aria-label="Mở chi tiết về Tự Do"
+      >
+        <span class="book" aria-hidden="true">
+          <span class="book-shadow"></span>
+          <span class="book-back"></span>
+          <span class="page-block"></span>
+          <span class="page-fan">
+            <i></i><i></i><i></i><i></i>
+          </span>
+          <span class="front-cover">
+            <span class="cover-copy">
+              <span class="cover-roman">II</span>
+              <span class="cover-kicker">Giá trị thứ hai</span>
+              <strong class="cover-title">Tự<br>Do</strong>
+              <span class="cover-subtitle">Quyền con người<br>phải được tôn trọng và bảo vệ</span>
+              <span class="cover-emblem">
+                <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="30" cy="30" r="24" stroke="rgba(200,220,248,.35)" stroke-width="1"/>
+                  <path d="M30 14 C30 14 40 22 40 32 C40 38 36 44 30 46 C24 44 20 38 20 32 C20 22 30 14 30 14Z" stroke="rgba(200,220,248,.5)" stroke-width="1.5" fill="none"/>
+                  <line x1="30" y1="18" x2="30" y2="42" stroke="rgba(200,220,248,.4)" stroke-width="1"/>
+                  <line x1="22" y1="28" x2="38" y2="28" stroke="rgba(200,220,248,.4)" stroke-width="1"/>
+                </svg>
+              </span>
+              <span class="cover-footer">Hồ Chí Minh Toàn Tập · 1945–1954</span>
+            </span>
+          </span>
+        </span>
+        <span class="open-badge" aria-hidden="true">Mở</span>
+      </button>
+
+      <!-- BOOK 3: HẠNH PHÚC -->
+      <button
+        class="book-card"
+        type="button"
+        data-book="hanhphuc"
+        aria-label="Mở chi tiết về Hạnh Phúc"
+      >
+        <span class="book" aria-hidden="true">
+          <span class="book-shadow"></span>
+          <span class="book-back"></span>
+          <span class="page-block"></span>
+          <span class="page-fan">
+            <i></i><i></i><i></i><i></i>
+          </span>
+          <span class="front-cover">
+            <span class="cover-copy">
+              <span class="cover-roman">III</span>
+              <span class="cover-kicker">Giá trị thứ ba</span>
+              <strong class="cover-title">Hạnh<br>Phúc</strong>
+              <span class="cover-subtitle">Ấm no và hạnh phúc<br>là mục tiêu của độc lập và tự do</span>
+              <span class="cover-emblem">
+                <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="30" cy="30" r="24" stroke="rgba(200,240,195,.35)" stroke-width="1"/>
+                  <!-- lotus -->
+                  <ellipse cx="30" cy="36" rx="4" ry="7" fill="rgba(200,240,195,.45)"/>
+                  <ellipse cx="22" cy="32" rx="4" ry="7" transform="rotate(-30 22 32)" fill="rgba(200,240,195,.35)"/>
+                  <ellipse cx="38" cy="32" rx="4" ry="7" transform="rotate(30 38 32)" fill="rgba(200,240,195,.35)"/>
+                  <ellipse cx="16" cy="26" rx="3.5" ry="6" transform="rotate(-55 16 26)" fill="rgba(200,240,195,.25)"/>
+                  <ellipse cx="44" cy="26" rx="3.5" ry="6" transform="rotate(55 44 26)" fill="rgba(200,240,195,.25)"/>
+                  <line x1="30" y1="42" x2="30" y2="48" stroke="rgba(200,240,195,.4)" stroke-width="1.5"/>
+                </svg>
+              </span>
+              <span class="cover-footer">Hồ Chí Minh Toàn Tập · 1945–1966</span>
+            </span>
+          </span>
+        </span>
+        <span class="open-badge" aria-hidden="true">Mở</span>
+      </button>
+
+    </section>
+
+    <!-- PETAL FIELD -->
+    <div class="petal-field" aria-hidden="true"></div>
+
+    <!-- DETAIL PANELS (one per book) -->
+    <div class="detail-panel" id="detail-doclap" aria-live="polite" style="--accent: #c45050;">
+      <div class="detail-scroll" tabindex="0">
+        <h2 class="detail-title">Độc Lập</h2>
+        <p class="detail-subtitle">Quyền bất khả xâm phạm của dân tộc</p>
+        <p class="detail-description">
+          Trong tư tưởng Hồ Chí Minh, <strong>độc lập dân tộc</strong> là nền tảng của mọi nền tảng — tiền đề bắt buộc để tự do và hạnh phúc trở thành hiện thực. Không có độc lập, mọi quyền tự do đều chỉ là danh nghĩa.
+        </p>
+        <div class="doc-section">
+          <p class="doc-label">Nội hàm cốt lõi</p>
+          <ol class="doc-steps">
+            <li>
+              <div class="doc-step-copy">
+                <strong>Chủ quyền hoàn toàn</strong>
+                <span>Độc lập phải tuyệt đối — không phân chia, không hạn chế về lãnh thổ, chính trị, kinh tế và quân sự.</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Dân tộc tự quyết</strong>
+                <span>Mỗi dân tộc có quyền tự quyết định con đường phát triển của mình, không phụ thuộc vào bất kỳ thế lực ngoại bang nào.</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Gắn với chủ nghĩa xã hội</strong>
+                <span>Độc lập dân tộc phải gắn liền với sự nghiệp giải phóng giai cấp và giải phóng con người — bước tất yếu đến chủ nghĩa xã hội.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="doc-section">
+          <p class="doc-label">Trích dẫn gốc</p>
+          <div class="quote-block">
+            "Nước Việt Nam có quyền hưởng tự do và độc lập, và sự thật đã thành một nước tự do độc lập."
+            <span class="quote-source">— Tuyên ngôn Độc lập, 2/9/1945</span>
+          </div>
+          <div class="quote-block" style="margin-top: 10px;">
+            "Chúng tôi trịnh trọng tuyên bố với thế giới rằng: Tất cả các dân tộc trên thế giới đều sinh ra bình đẳng; dân tộc nào cũng có quyền sống, quyền sung sướng và quyền tự do."
+            <span class="quote-source">— Tuyên ngôn Độc lập, 2/9/1945</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-tudo" aria-live="polite" style="--accent: #5080c0;">
+      <div class="detail-scroll" tabindex="0">
+        <h2 class="detail-title">Tự Do</h2>
+        <p class="detail-subtitle">Quyền cơ bản của mỗi con người</p>
+        <p class="detail-description">
+          <strong>Tự do</strong> trong tư tưởng Hồ Chí Minh không chỉ là tự do chính trị mà còn bao gồm tự do kinh tế, văn hóa và xã hội. Tự do thực sự chỉ có thể đạt được khi dân tộc đã độc lập.
+        </p>
+        <div class="doc-section">
+          <p class="doc-label">Các chiều kích tự do</p>
+          <ol class="doc-steps">
+            <li>
+              <div class="doc-step-copy">
+                <strong>Tự do chính trị</strong>
+                <span>Quyền bầu cử, ứng cử, tham gia vào các công việc của nhà nước và xã hội — nền tảng của dân chủ nhân dân.</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Tự do cá nhân</strong>
+                <span>10 quyền cơ bản trong Hiến pháp 1946: tự do ngôn luận, tự do báo chí, tự do hội họp, tự do tín ngưỡng...</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Tự do kinh tế</strong>
+                <span>Người lao động được hưởng thành quả lao động của mình; xóa bỏ bóc lột, xây dựng xã hội công bằng.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="doc-section">
+          <p class="doc-label">Trích dẫn gốc</p>
+          <div class="quote-block">
+            "Tôi chỉ có một sự ham muốn, ham muốn tột bậc, là làm sao cho nước ta được hoàn toàn độc lập, dân ta được hoàn toàn tự do, đồng bào ai cũng có cơm ăn áo mặc, ai cũng được học hành."
+            <span class="quote-source">— Hồ Chí Minh Toàn tập, tập 4, trang 161</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-hanhphuc" aria-live="polite" style="--accent: #60a858;">
+      <div class="detail-scroll" tabindex="0">
+        <h2 class="detail-title">Hạnh Phúc</h2>
+        <p class="detail-subtitle">Mục tiêu tối thượng của sự nghiệp cách mạng</p>
+        <p class="detail-description">
+          <strong>Hạnh phúc</strong> là đích đến cuối cùng, là lý do tồn tại của cả độc lập lẫn tự do. Người luôn nhấn mạnh: độc lập mà dân không được hưởng hạnh phúc thì độc lập cũng vô nghĩa.
+        </p>
+        <div class="doc-section">
+          <p class="doc-label">Hạnh phúc trong tư tưởng Hồ Chí Minh</p>
+          <ol class="doc-steps">
+            <li>
+              <div class="doc-step-copy">
+                <strong>Hạnh phúc vật chất</strong>
+                <span>Dân chúng được ăn no mặc ấm, có nhà ở, được học hành và chữa bệnh — những nhu cầu cơ bản được đáp ứng đầy đủ.</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Hạnh phúc tinh thần</strong>
+                <span>Được sống trong một xã hội có văn hóa, đạo đức, không bị áp bức bóc lột, được tôn trọng phẩm giá.</span>
+              </div>
+            </li>
+            <li>
+              <div class="doc-step-copy">
+                <strong>Hạnh phúc là thước đo</strong>
+                <span>Hạnh phúc của nhân dân là tiêu chí để đánh giá thành công của cách mạng và của chế độ xã hội chủ nghĩa.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="doc-section">
+          <p class="doc-label">Trích dẫn gốc</p>
+          <div class="quote-block">
+            "Nếu nước độc lập mà dân không hưởng hạnh phúc tự do, thì độc lập cũng chẳng có nghĩa lý gì."
+            <span class="quote-source">— Hồ Chí Minh, tháng 1/1946</span>
+          </div>
+          <div class="quote-block" style="margin-top: 10px;">
+            "Không có gì quý hơn độc lập, tự do."
+            <span class="quote-source">— Thư gửi nhân dân Mỹ, 17/7/1966</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM DOCK -->
+    <div class="bottom-dock" id="bottomDock" hidden>
+      <div class="meta-row">
+        <div class="stars">★★★★★</div>
+        <div class="meta-divider"></div>
+        <span class="review-source" id="dockSource">HCM Toàn tập</span>
+        <span class="year" id="dockYear">1945</span>
+      </div>
+      <hr class="detail-rule">
+      <div class="action-rail">
+        <button class="pill" id="pillPrev" type="button">← Trước</button>
+        <button class="pill" id="pillNext" type="button">Tiếp →</button>
+        <button class="pill icon-only" id="pillBookmark" type="button" aria-pressed="false" aria-label="Đánh dấu">
+          <svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 011 1v17l-8-4-8 4V4a1 1 0 011-1z"/></svg>
+        </button>
+        <button class="pill icon-only" id="pillShare" type="button" aria-label="Chia sẻ">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CLOSE BUTTON -->
+    <button class="close-button" id="closeBtn" type="button" aria-label="Đóng chi tiết">+</button>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status"></div>
+
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const stage = document.querySelector('.stage');
+      const body = document.body;
+      const books = ['doclap', 'tudo', 'hanhphuc'];
+      const bookOrders = { doclap: 0, tudo: 1, hanhphuc: 2 };
+      const bookMeta = {
+        doclap:   { source: 'Tuyên ngôn 1945', year: '1945', accent: '#c45050' },
+        tudo:     { source: 'Hiến pháp 1946',  year: '1946', accent: '#5080c0' },
+        hanhphuc: { source: 'HCM Toàn tập',    year: '1966', accent: '#60a858' },
+      };
+
+      let currentBook = null;
+      let isAnimating = false;
+
+      // Mouse parallax
+      document.addEventListener('mousemove', (e) => {
+        const mx = (e.clientX - window.innerWidth / 2);
+        const my = (e.clientY - window.innerHeight / 2);
+        document.documentElement.style.setProperty('--mx', `${mx}px`);
+        document.documentElement.style.setProperty('--my', `${my}px`);
+
+        // Subtle book wobble on hover-none devices
+        if (currentBook) {
+          const card = document.querySelector(`.book-card.selected .book`);
+          if (card) {
+            const nx = (mx / window.innerWidth) * 8;
+            const ny = (my / window.innerHeight) * 4;
+            card.style.setProperty('--detail-yaw', `${-5 + nx}deg`);
+            card.style.setProperty('--detail-pitch', `${ny}deg`);
+          }
+        }
+      });
+
+      // Toast helper
+      const toast = document.getElementById('toast');
+      let toastTimer;
+      function showToast(msg) {
+        clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.dataset.show = 'true';
+        toastTimer = setTimeout(() => { toast.dataset.show = 'false'; }, 2800);
+      }
+
+      // Ticket button
+      document.querySelectorAll('[data-toast]').forEach(btn => {
+        btn.addEventListener('click', () => showToast(btn.dataset.toast));
+      });
+
+      // Open book detail
+      function openBook(bookId) {
+        if (isAnimating || currentBook === bookId) return;
+        isAnimating = true;
+        currentBook = bookId;
+
+        // Hide all detail panels
+        document.querySelectorAll('.detail-panel').forEach(p => p.style.display = 'none');
+        const panel = document.getElementById(`detail-${bookId}`);
+        if (panel) panel.style.display = '';
+
+        // Select the card
+        document.querySelectorAll('.book-card').forEach(c => c.classList.remove('selected'));
+        const card = document.querySelector(`[data-book="${bookId}"]`);
+        if (card) card.classList.add('selected');
+
+        // Set accent color for dock
+        const meta = bookMeta[bookId];
+        const dock = document.getElementById('bottomDock');
+        if (dock) {
+          dock.style.setProperty('--accent', meta.accent);
+          dock.querySelector('#dockSource').textContent = meta.source;
+          dock.querySelector('#dockYear').textContent = meta.year;
+          dock.hidden = false;
+        }
+
+        // Spawn petals
+        spawnPetals();
+
+        // Trigger detail mode
+        body.dataset.mode = 'detail';
+
+        setTimeout(() => { isAnimating = false; }, 600);
+      }
+
+      // Close book detail
+      function closeBook() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        body.dataset.mode = 'gallery';
+        document.querySelectorAll('.book-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.detail-panel').forEach(p => p.style.display = '');
+        document.getElementById('bottomDock').hidden = true;
+        currentBook = null;
+
+        setTimeout(() => { isAnimating = false; }, 700);
+      }
+
+      // Book card click
+      document.querySelectorAll('.book-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const bookId = card.dataset.book;
+          if (currentBook === bookId) return;
+          if (currentBook) {
+            closeBook();
+            setTimeout(() => openBook(bookId), 400);
+          } else {
+            openBook(bookId);
+          }
+        });
+
+        // Hover for parallax badge
+        card.addEventListener('mouseenter', () => {
+          if (body.dataset.mode !== 'detail') card.dataset.hovered = 'true';
+        });
+        card.addEventListener('mouseleave', () => {
+          delete card.dataset.hovered;
+        });
+      });
+
+      // Close button
+      document.getElementById('closeBtn').addEventListener('click', closeBook);
+
+      // Navigation pills
+      document.getElementById('pillPrev').addEventListener('click', () => {
+        if (!currentBook) return;
+        const idx = bookOrders[currentBook];
+        const prev = books[(idx - 1 + books.length) % books.length];
+        closeBook();
+        setTimeout(() => openBook(prev), 400);
+      });
+
+      document.getElementById('pillNext').addEventListener('click', () => {
+        if (!currentBook) return;
+        const idx = bookOrders[currentBook];
+        const next = books[(idx + 1) % books.length];
+        closeBook();
+        setTimeout(() => openBook(next), 400);
+      });
+
+      // Bookmark toggle
+      document.getElementById('pillBookmark').addEventListener('click', (e) => {
+        const pressed = e.currentTarget.getAttribute('aria-pressed') === 'true';
+        e.currentTarget.setAttribute('aria-pressed', !pressed);
+        showToast(pressed ? 'Đã bỏ đánh dấu' : `Đã đánh dấu "${currentBook === 'doclap' ? 'Độc Lập' : currentBook === 'tudo' ? 'Tự Do' : 'Hạnh Phúc'}"`);
+      });
+
+      // Share
+      document.getElementById('pillShare').addEventListener('click', () => {
+        showToast('Đường dẫn đã được sao chép!');
+      });
+
+      // Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && currentBook) closeBook();
+      });
+
+      // Petals
+      function spawnPetals() {
+        const field = document.querySelector('.petal-field');
+        field.innerHTML = '';
+        const count = 22;
+        for (let i = 0; i < count; i++) {
+          const petal = document.createElement('div');
+          petal.className = 'petal';
+          petal.style.setProperty('--petal-x', `${Math.random() * 100}vw`);
+          petal.style.setProperty('--petal-duration', `${4 + Math.random() * 5}s`);
+          petal.style.setProperty('--petal-delay', `${Math.random() * 4}s`);
+          petal.style.setProperty('--petal-r', `${Math.random() * 360}deg`);
+          for (let j = 0; j < 5; j++) {
+            const leaf = document.createElement('i');
+            petal.appendChild(leaf);
+          }
+          field.appendChild(petal);
+        }
+      }
+
+      // Hide all detail panels initially
+      document.querySelectorAll('.detail-panel').forEach(p => {
+        p.style.display = '';
+      });
+
+      // Init: all panels hidden by CSS (opacity: 0)
+      console.log('[HCM202] Ba Giá Trị book showcase ready.');
+    })();
+  </script>
+</body>
+</html>
