@@ -2,7 +2,7 @@
 
 :root {
   /* Nền sơn mài tối */
-  --bg-900: #0B0A09;      /* Nền vóc đen sâu nhất */
+  --bg-900: #101412;      /* Nền xanh đen của phòng lưu trữ */
   --bg-800: #14110E;      /* Nền panel trũng */
   --bg-700: #1F1A15;      /* Nền nổi bậc nhẹ */
   --line:   rgba(245, 239, 227, 0.12); /* Đường viền 1px mỏng tối giản */
@@ -22,13 +22,13 @@
   --hanhphuc:      #9CC45A;    /* Xanh mạ non */
   --hanhphuc-glow: #C9E88A;    /* Mạ non bừng sáng */
 
-  --gold:          #E3B341;    /* Vàng kim / hoàn thành */
+  --gold:          #d9b878;    /* Vàng nhạt / nhận diện */
   --gold-glow:     #FFE380;
   --locked:        #4A4038;    /* Xám then khóa */
 
   /* Thang font chữ biên tập editorial (Fluid Typography) */
-  --font-display: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
-  --font-quote:   'Lora', serif;
+  --font-display: var(--font-vietnam), system-ui, -apple-system, sans-serif;
+  --font-quote: var(--font-lora), Georgia, serif;
 
   --step--1: clamp(0.8rem, 0.75rem + 0.2vw, 0.92rem);
   --step-0:  clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
@@ -40,6 +40,7 @@
   --cursor-x: 50vw;
   --cursor-y: 50vh;
 }
+
 
 @theme {
   --color-bg-900: #0B0A09;

@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 import { Be_Vietnam_Pro, Lora } from 'next/font/google';
+import '@/components/book/library.css';
 import './globals.css';
 import { PROJECT } from '@/content/scenes';
-import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 
 const beVietnamPro = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800', '900'],
   subsets: ['vietnamese', 'latin'],
-  variable: '--font-display',
+  variable: '--font-vietnam',
   display: 'swap',
 });
 
@@ -15,7 +15,7 @@ const lora = Lora({
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   subsets: ['vietnamese', 'latin'],
-  variable: '--font-quote',
+  variable: '--font-lora',
   display: 'swap',
 });
 
@@ -55,8 +55,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className={`${beVietnamPro.variable} ${lora.variable} bg-[#0B0A09]`}>
-      <body className="antialiased min-h-screen bg-[#0B0A09] text-[#F5EFE3] selection:bg-[#C8102E]/40 overflow-x-hidden">
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      <body className="antialiased bg-[#25251e] text-[#F5EFE3] selection:bg-[#C8102E]/40">
+        {children}
       </body>
     </html>
   );

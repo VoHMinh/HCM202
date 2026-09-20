@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { LitPathCanvas } from '@/components/canvas/LitPathCanvas';
+import { ThreeValuesLibrary } from '@/components/book/ThreeValuesLibrary';
 
 export default function Home() {
-  return <LitPathCanvas />;
+  return <ThreeValuesLibrary />;
 }
