@@ -100,6 +100,8 @@ export function FolioReader({ volume, onSeen, onNextBook, onEnd, onSource, pause
           <div className="stationary-page right"><PaperPage book={book} index={turn?.direction === 'next' ? turn.to : page} side="right" /></div>
           <div className="book-gutter" />
           {turn && <CurvedLeaf book={book} turn={turn} onFinish={finishTurn} />}
+          <button className="page-hit page-hit-prev" onClick={() => flip('prev')} disabled={page === 0 || !!turn || paused} aria-label="Lật về trang trước"><span>← Trang trước</span></button>
+          <button className="page-hit page-hit-next" onClick={next} disabled={!!turn || paused} aria-label={page < 2 ? 'Lật sang trang tiếp' : volume < 2 ? `Khép sách và mở cuốn ${volumes[volume + 1].title}` : 'Khép sách và xem kết nối'}><span>{page < 2 ? 'Trang tiếp →' : volume < 2 ? `Mở cuốn ${volumes[volume + 1].title} →` : 'Kết nối ba giá trị →'}</span></button>
         </div>
         <div className="reader-controls"><button className="round-button" onClick={() => flip('prev')} disabled={page === 0 || !!turn} aria-label="Trang trước"><ArrowLeft size={18} /></button><span aria-live="polite">Trang {page * 2 + 1}–{page * 2 + 2} <span>/ 6</span></span><button className="round-button" onClick={() => flip('next')} disabled={page === 2 || !!turn} aria-label="Trang sau"><ArrowRight size={18} /></button></div>
       </div>
