@@ -6,7 +6,7 @@ import { volumes, type Volume } from '@/content/library';
 
 type Turn = { from: number; to: number; direction: 'next' | 'prev' };
 
-const PaperPage = memo(function PaperPage({ book, index, side }: { book: Volume; index: number; side: 'left' | 'right' }) {
+export const PaperPage = memo(function PaperPage({ book, index, side }: { book: Volume; index: number; side: 'left' | 'right' }) {
   const reading = book.readings[index];
   return <div className={`paper-page paper-${side}`}>
     <div className="paper-running"><span>{side === 'left' ? `Quyển ${book.roman} · ${book.title}` : reading.date}</span><span>{side === 'left' ? 'HCM202' : 'Chương 3'}</span></div>
@@ -89,7 +89,7 @@ export function FolioReader({ volume, onSeen, onNextBook, onEnd, onSource, pause
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [paused, next, flip]);
 
-  return <section className="reader-scene scene-enter" aria-label={`Đang đọc ${book.title}`}>
+  return <section className="reader-scene scene-enter" data-page={page} aria-label={`Đang đọc ${book.title}`}>
     <div className="reader-heading"><span className="eyebrow">Quyển {book.roman} · {book.role}</span><h1>{book.title}</h1><span className="reader-position">{String(page + 1).padStart(2, '0')} / 03</span></div>
     <div className="mobile-reader-tabs"><button aria-pressed={mobilePanel === 'book'} onClick={() => setMobilePanel('book')}>Trang sách</button><button aria-pressed={mobilePanel === 'notes'} onClick={() => setMobilePanel('notes')}>Cùng suy ngẫm</button></div>
     <div className={`reading-layout mobile-${mobilePanel}`}>

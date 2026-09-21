@@ -9,11 +9,13 @@ import { MeaningEnding } from './MeaningEnding';
 import { BookTransition, type BookJourney } from './BookTransition';
 
 type View = 'shelf' | 'reader' | 'ending';
+const ignoreSeen = () => {};
 
 export function ThreeValuesLibrary() {
   const [view, setView] = useState<View>('shelf');
   const [volume, setVolume] = useState(0);
   const [journey, setJourney] = useState<BookJourney | null>(null);
+  const [revealed, setRevealed] = useState(false);
   const journeyLock = useRef(false);
   const [seen, setSeen] = useState<Record<number, number[]>>({});
   const [sourceOpen, setSourceOpen] = useState(false);
@@ -26,13 +28,23 @@ export function ThreeValuesLibrary() {
   const openBook = useCallback((index: number) => {
     if (journeyLock.current || (view === 'reader' && volume === index)) return;
     journeyLock.current = true;
-    const rect = view === 'shelf' ? coverRefs.current[index]?.getBoundingClientRect() : undefined;
-    setJourney({ to: index, from: view === 'reader' ? volume : undefined, rect: rect ? { x: rect.x, y: rect.y, width: rect.width, height: rect.height } : undefined });
+    const source = view === 'shelf' ? coverRefs.current[index] : null;
+    const rect = source?.getBoundingClientRect();
+    const matrix = source ? new DOMMatrixReadOnly(getComputedStyle(source).transform) : null;
+    const page = Number(stageRef.current?.querySelector<HTMLElement>('.reader-scene')?.dataset.page ?? 0);
+    setRevealed(false);
+    setJourney({ to: index, from: view === 'reader' ? volume : undefined, page,
+      rect: rect && source ? { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2, width: source.offsetWidth, height: source.offsetHeight, rotation: matrix ? Math.atan2(matrix.b, matrix.a) * 180 / Math.PI : 0 } : undefined });
   }, [view, volume]);
-  const revealBook = useCallback((index: number) => { setVolume(index); setView('reader'); }, []);
+  const revealBook = useCallback((index: number) => { setVolume(index); setView('reader'); setRevealed(true); }, []);
+  const getReaderTarget = useCallback(() => stageRef.current?.querySelector<HTMLElement>('.reader-host .open-folio') ?? null, []);
   const finishJourney = useCallback(() => { setJourney(null); journeyLock.current = false; stageRef.current?.focus({ preventScroll: true }); }, []);
   const showSource = useCallback((index: number) => { setSourceIndex(index); setSourceOpen(true); }, []);
-  const close = useCallback(() => { setJourney(null); journeyLock.current = false; setView('shelf'); requestAnimationFrame(() => coverRefs.current[volume]?.focus()); }, [volume]);
+  const close = useCallback(() => {
+    const returnVolume = journey?.to ?? volume;
+    setJourney(null); journeyLock.current = false; setView('shelf');
+    requestAnimationFrame(() => coverRefs.current[returnVolume]?.focus({ preventScroll: true }));
+  }, [volume, journey]);
 
   useEffect(() => { if (view !== 'shelf') stageRef.current?.focus({ preventScroll: true }); }, [view, volume]);
   useEffect(() => {
@@ -41,8 +53,8 @@ export function ThreeValuesLibrary() {
     return () => window.removeEventListener('keydown', key);
   }, [view, sourceOpen, close]);
 
-  return <main className={`folio-app view-${view}`}>
-    <header className="folio-header">
+  return <main className={`folio-app view-${view} ${journey ? 'journey-active' : ''}`}>
+    <header className="folio-header" inert={journey !== null}>
       <button className="wordmark" onClick={close} aria-label="Về bộ sưu tập Ba giá trị">Ba giá trị<span>Tư tưởng Hồ Chí Minh</span></button>
       <span className="course-label">HCM202 <span>/</span> Chương 3</span>
       <div className="header-actions">
@@ -53,9 +65,8 @@ export function ThreeValuesLibrary() {
 
     <div className="folio-stage" ref={stageRef} tabIndex={-1} inert={journey !== null}>
       {view === 'shelf' && <section className="shelf-scene scene-enter" aria-labelledby="shelf-title">
-        <div className="shelf-heading"><span className="eyebrow">Độc lập · Tự do · Hạnh phúc</span><h1 id="shelf-title">Sau độc lập, <em>là điều gì?</em></h1><p>Ba cuốn sách. Một câu hỏi về cuộc sống của nhân dân.</p></div>
+        <div className="shelf-heading"><h1 id="shelf-title">Sau độc lập, <em>là điều gì?</em></h1><p>Ba cuốn sách. Một câu hỏi về cuộc sống của nhân dân.</p></div>
         <div className="book-collection" aria-label="Chọn một cuốn sách để mở đọc ngay">
-          <aside className="shelf-margin margin-left"><span>Câu hỏi khởi đầu</span><p>Một dân tộc độc lập.<br />Con người đã được<br /><em>tự do, hạnh phúc?</em></p></aside>
           {volumes.map((item, index) => <button ref={node => { coverRefs.current[index] = node; }} className={`shelf-book book-${index}`} key={item.id} onClick={() => openBook(index)} aria-label={`Mở sách ${item.title}`}>
             <span className="book-solid">
               <span className="book-back" /><span className="book-edge" />
@@ -70,20 +81,21 @@ export function ThreeValuesLibrary() {
             </span>
             <span className="book-hover-hint"><BookOpen size={15} /> Mở câu chuyện</span>
           </button>)}
-          <aside className="shelf-margin margin-right"><span>Đi qua ba giá trị</span><p>Từ quyền tự quyết<br />đến quyền làm chủ,<br /><em>đến cuộc sống ấm no.</em></p></aside>
         </div>
-        <div className="shelf-invitation"><button className="primary-button" onClick={() => openBook(0)}>Bắt đầu với Độc lập <ArrowRight size={17} /></button><p>Hoặc nhấp vào bất kỳ cuốn sách nào để đọc.</p></div>
+        <div className="shelf-invitation"><button className="primary-button" onClick={() => openBook(0)}>Bắt đầu với Độc lập <ArrowRight size={17} /></button></div>
       </section>}
-      {view === 'reader' && <FolioReader key={volume} volume={volume} onSeen={markSeen} onNextBook={openBook} onEnd={() => setView('ending')} onSource={showSource} paused={sourceOpen || journey !== null} />}
+      {(view === 'reader' || journey) && <div className={`reader-host ${journey && !revealed ? 'is-staged' : ''}`} aria-hidden={journey && !revealed ? true : undefined}>
+        <FolioReader key={journey?.to ?? volume} volume={journey?.to ?? volume} onSeen={journey && !revealed ? ignoreSeen : markSeen} onNextBook={openBook} onEnd={() => setView('ending')} onSource={showSource} paused={sourceOpen || journey !== null} />
+      </div>}
       {view === 'ending' && <MeaningEnding onRead={openBook} />}
     </div>
 
     <footer className="folio-footer" inert={journey !== null}><span className="footer-caption">Một hành trình <em>vì con người.</em></span>
       <nav className="journey-nav" aria-label="Các chương trong hành trình">{volumes.map((item, index) => <button key={item.id} aria-current={view === 'reader' && volume === index ? 'step' : undefined} onClick={() => openBook(index)}><span>{seen[index]?.length === 3 ? <Check size={12} /> : `0${index + 1}`}</span>{item.title}</button>)}<button aria-current={view === 'ending' ? 'step' : undefined} onClick={() => setView('ending')}><span>04</span>Kết nối</button></nav>
-      <span className="reading-progress">{readCount}/9 lượt đọc</span>
+      <span className="reading-progress">Đã đọc {readCount}/9 phần</span>
     </footer>
 
-    {journey && <BookTransition journey={journey} onReveal={revealBook} onDone={finishJourney} />}
+    {journey && <BookTransition journey={journey} getTarget={getReaderTarget} onReveal={revealBook} onDone={finishJourney} />}
     <Dialog.Root open={sourceOpen} onOpenChange={setSourceOpen}>
       <Dialog.Portal><Dialog.Overlay className="sources-overlay" /><Dialog.Content className="sources-dialog">
         <div className="sources-header"><div><span className="eyebrow">Phòng tư liệu</span><Dialog.Title>Những trang làm nên câu chuyện</Dialog.Title></div><Dialog.Close className="round-button" aria-label="Đóng tư liệu"><X size={20} /></Dialog.Close></div>
