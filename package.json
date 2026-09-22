@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:game": "node --test tests/garden-engine.test.cjs",
+    "assets:game": "node scripts/prepare-game-assets.cjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

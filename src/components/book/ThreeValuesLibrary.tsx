@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, BookOpen, Check, ExternalLink, Library, X } from 'lucide-react';
 import { references, volumes } from '@/content/library';
@@ -58,6 +59,7 @@ export function ThreeValuesLibrary() {
       <button className="wordmark" onClick={close} aria-label="Về bộ sưu tập Ba giá trị">Ba giá trị<span>Tư tưởng Hồ Chí Minh</span></button>
       <span className="course-label">HCM202 <span>/</span> Chương 3</span>
       <div className="header-actions">
+        <Link href="/game" className="source-trigger" style={{ textDecoration: 'none' }}>Chơi game</Link>
         <button className="source-trigger" onClick={() => showSource(0)}><Library size={17} /><span>Tư liệu</span></button>
         {view !== 'shelf' && <button className="collection-button" onClick={close} aria-label="Đóng sách"><X size={16} /><span>Đóng sách</span></button>}
       </div>

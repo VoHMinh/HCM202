@@ -1,0 +1,130 @@
+/* Game shell owns the viewport. Only explicit detail dialogs may scroll. */
+.happiness-app{height:100dvh;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.garden-header{height:60px;min-height:60px;width:100%;padding:0 26px}
+.garden-wordmark{font-size:23px!important}.garden-wordmark span{font-size:7px;margin-top:2px}
+.garden-shell{width:100%;flex:1;min-height:0;display:flex;flex-direction:column;padding:12px 26px 6px}
+.garden-topline{flex-shrink:0;margin:0 0 9px;gap:12px}.garden-topline h1{font-size:25px;margin-top:2px}.garden-session{gap:13px}
+.garden-tabs{flex-shrink:0;margin:0 0 10px;gap:22px}.garden-tabs button{padding:4px 2px 7px}.garden-tabs img{height:21px}
+.garden-layout{flex:1;min-height:0;display:grid;grid-template-columns:190px minmax(0,1fr) 235px;gap:20px;align-items:stretch}
+.garden-left,.garden-right{min-height:0}.garden-right{display:block;grid-column:auto}
+.garden-center{position:relative;min-height:0;display:flex;flex-direction:column;container-type:size}
+.garden-world,.welcome .garden-world{flex:1;min-height:0;max-height:none;aspect-ratio:auto;width:min(100%,calc((100cqh - 76px)*1.25));margin:0;align-self:center}
+.garden-actionbar{flex-shrink:0;padding:10px 0 3px;gap:7px}.garden-actionbar .garden-button{min-height:35px;padding:5px 10px;font-size:10px!important}.garden-actionbar .garden-button img{width:22px;height:24px}
+.garden-guidance{flex-shrink:0;font-size:9px;margin:4px 0}.garden-guidance p{max-width:none}
+.garden-world-sign{width:160px;padding:10px;bottom:0}.garden-world-sign span{font-size:8px}.garden-world-sign small{font-size:7px}
+.garden-threat-banner{position:absolute;top:0;left:0;right:0;z-index:40;padding:6px 10px;pointer-events:none}.garden-threat-banner img{width:24px;height:25px}.garden-threat-banner strong{font-size:14px}.garden-threat-banner span{font-size:8px}
+.garden-wallet{padding:0 0 12px;margin-bottom:12px;gap:11px}.garden-wallet>img{width:43px;height:49px}.garden-wallet strong{font-size:30px}
+.garden-balance{padding-bottom:12px}.garden-balance-heading{margin-bottom:9px}.garden-count{margin:7px 0}.garden-balance>p{margin-top:9px;font-size:9px}
+.garden-defense{padding-top:12px}.garden-defense>p{font-size:9px;margin:7px 0 10px}.garden-defense .garden-button{min-height:34px;padding:5px 8px}.garden-buff{margin-top:5px;font-size:8px}
+.garden-seedbox{padding:17px 12px}.garden-seedbox>h2{font-size:22px;margin:4px 0 10px}.garden-seed{min-height:70px;padding:6px 2px}.garden-seed>img{width:44px;height:54px}.garden-seed strong{font-size:16px}.garden-seedbox>p{margin-top:9px;font-size:8px}
+.garden-journal{display:none}
+.garden-season-strip{flex-shrink:0;grid-template-columns:170px 1fr;gap:15px;margin-top:8px;padding-top:7px}.garden-season-strip>div:first-child{display:block}.garden-season-strip>div>p{font-size:14px;line-height:1.3;margin-top:3px}.garden-season-strip>div>p br{display:none}
+.garden-seasons{gap:8px;grid-template-columns:repeat(4,1fr)}.garden-seasons button{gap:8px;padding:3px 6px}.garden-seasons button>img{height:47px;width:28px}.garden-seasons button strong{font-size:14px;margin:2px 0}.garden-seasons button em{display:none}.garden-seasons button small{font-size:7px}
+.garden-bottom-tools{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;font-size:8px;color:var(--garden-muted);min-height:23px}.garden-bottom-tools button{display:flex;align-items:center;gap:5px;background:none;border:0;color:var(--garden-gold);padding:4px;font-size:10px}
+.garden-history p{font-size:12px;margin:12px 0}.garden-history strong{color:#8d7040;margin-right:8px;font-size:10px}
+.garden-welcome-copy{padding-top:20px}.garden-welcome-copy h2{font-size:27px;margin:12px 0}.garden-welcome-copy>p{font-size:11px}.garden-welcome-rule{margin-top:15px;padding-top:12px}.garden-text-link{margin:14px 0}.garden-welcome-copy .garden-local-note{font-size:8px}
+.welcome .garden-left,.welcome .garden-right,.welcome .garden-center{grid-column:auto;grid-row:auto}.garden-join{padding:18px;max-width:none}.garden-join-icon{display:none!important}.garden-join h2{font-size:24px;margin-bottom:12px}.garden-join label,.garden-join legend{margin:8px 0 4px}.garden-join input:not([type=radio]){padding:8px;font-size:11px}.garden-join fieldset{margin:8px 0 12px}.garden-join fieldset label{margin:5px 0}.garden-join .garden-button{min-height:36px}.garden-try{margin-top:9px}
+.garden-neighbors,.garden-ranking{min-height:0;height:100%;padding:18px 23px}.garden-ranking-trophy{display:none!important}.garden-neighbors>h2,.garden-ranking>h2{font-size:25px;margin:5px 0 9px}.garden-neighbors>p,.garden-ranking>p{font-size:10px;line-height:1.6}.garden-neighbor{padding:10px 0;gap:10px}.garden-neighbor>img{height:57px;width:44px}.garden-neighbor h3{font-size:18px}.garden-lock-note{margin:8px 0!important;padding:7px}
+.garden-rank-tabs{margin:10px 0 7px}.garden-rank-tabs button{padding:7px 5px}.garden-ranking table{margin-top:8px}.garden-ranking th{padding:6px}.garden-ranking td{padding:8px 6px}.garden-ranking td:last-child{font-size:19px}.garden-result-story{margin-top:10px}.garden-result-story h3{font-size:18px}.garden-result-story p{font-size:9px;margin:5px 0 8px}.garden-result-story .garden-button{min-height:32px;padding:5px 10px}
+.garden-toast{top:70px;bottom:auto;padding:9px 13px;max-width:min(470px,calc(100vw - 30px))}.garden-toast p{font-size:10px}
+/* A broad isometric field uses the available desktop width. Plants retain
+   their proportions; only the ground plane changes its viewing angle. */
+@media(min-width:761px){
+ .garden-layout:not(.welcome){grid-template-columns:180px minmax(0,1fr) 220px;gap:24px}
+ .is-playing .garden-world{width:min(100%,calc((100cqh - 70px)*2.15))}
+ .is-playing .garden-soil{object-fit:fill}
+ .is-playing .garden-plots{inset:6% 0 0}
+ .is-playing .garden-distant{width:62%;left:19%;height:46%;top:-2%}
+ .is-playing .garden-house{width:20%;right:1%;top:8%;height:32%}
+ .is-playing .garden-bush{width:17%;left:0;top:32%}
+ .is-playing .garden-lotus{width:17%;right:0;bottom:3%}
+ .is-playing .garden-rocks{width:15%;left:1%}
+ .is-playing .garden-character{left:9%;width:10%}
+ .is-playing .garden-plot-label{font-size:10px;padding:1px 9px}
+ .is-playing .garden-world-sign{width:180px}
+ .is-playing .garden-actionbar{gap:10px;width:min(100%,430px);align-self:center}
+ .is-playing .garden-actionbar .garden-button{flex:1;min-width:0;font-size:11px!important}
+ .is-playing .garden-guidance{font-size:10px}
+}
+@media(max-height:700px) and (min-width:761px){
+ .garden-header{height:48px;min-height:48px}.garden-shell{padding-top:8px}.garden-topline h1{font-size:22px}.garden-topline .garden-small-label{font-size:7px}.garden-tabs{margin-bottom:6px}.garden-season-strip{padding-top:4px}.garden-seasons button>img{height:35px;width:22px}.garden-seed{min-height:57px}.garden-seed>img{height:43px}.garden-seedbox>p,.garden-wallet small{display:none}.garden-balance>p{font-size:8px}.garden-wallet{padding-bottom:7px;margin-bottom:8px}.garden-defense{padding-top:8px}.garden-defense>p{margin:5px 0}.garden-welcome-copy .garden-local-note{display:none}.garden-join h2{font-size:20px;margin-bottom:8px}.garden-join h2 br{display:none}.garden-join label,.garden-join legend{margin:5px 0 3px}.garden-join fieldset{margin:5px 0 8px}.garden-join{padding:14px}.garden-neighbors,.garden-ranking{padding:13px 18px}.garden-neighbor{padding:7px 0}.garden-neighbor>img{height:44px}.garden-ranking td{padding:5px}.garden-result-story h3{display:none}.garden-ranking>h2{font-size:22px}
+}
+@media(max-width:1000px) and (min-width:761px){.garden-layout{grid-template-columns:160px minmax(0,1fr) 205px;gap:12px}.garden-shell{padding-inline:16px}.garden-count i{width:12px}.garden-seed strong{font-size:14px}.garden-seed>img{width:35px}.garden-welcome-copy h2{font-size:23px}.garden-season-strip{grid-template-columns:140px 1fr}}
+@media(max-width:760px){
+ .garden-header{height:48px;min-height:48px;padding:0 12px}.garden-wordmark{font-size:19px!important}.garden-wordmark span{font-size:6px}.garden-back span,.garden-help span{display:none}.garden-shell{padding:8px 12px 3px}.garden-topline{display:flex;gap:8px;margin-bottom:6px}.garden-topline h1{font-size:20px;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.garden-topline .garden-small-label{font-size:7px}.garden-session{margin:0}.mock-badge{display:none}.garden-clock{display:flex;flex-wrap:wrap;gap:5px;max-width:85px}.garden-clock strong{font-size:20px}.garden-clock span{font-size:8px;margin:0}.garden-clock svg{width:13px}.garden-tabs{gap:13px;margin:0 0 6px}.garden-tabs button{font-size:9px;padding:4px 0 6px}.garden-tabs .garden-reset{font-size:0;padding:4px}.garden-tabs .garden-reset svg{width:15px}
+ .garden-layout,.welcome{display:flex;flex-direction:column;gap:7px}.garden-layout:not(.welcome) .garden-left{order:0;display:flex;flex-wrap:nowrap;align-items:center;gap:9px;flex-shrink:0;min-height:46px;width:100%}.garden-wallet{border:0;padding:0;margin:0;gap:5px;flex-shrink:0}.garden-wallet>img{width:25px;height:29px}.garden-wallet>div{display:block}.garden-wallet span,.garden-wallet small{display:none}.garden-wallet strong{font-size:23px}.garden-balance{padding:0;border:0;flex:1}.garden-balance-heading{margin:0;gap:3px}.garden-balance-heading img,.garden-balance-heading h2,.garden-balance>p,.garden-count>div{display:none}.garden-balance-heading>strong{font-size:19px;margin:0}.garden-count{display:inline-flex;font-size:8px;margin:0 6px 0 0;gap:3px}.garden-count>span{width:auto}.garden-count b{margin:0}.garden-defense{padding:0 0 0 8px;border-left:1px solid var(--garden-line);flex-shrink:0;max-width:116px}.garden-defense h2,.garden-defense>p,.garden-defense .garden-button img{display:none}.garden-defense .garden-button{min-height:30px;font-size:9px!important;padding:5px 7px}.garden-buff{font-size:7px;margin-top:2px}
+ .garden-layout:not(.welcome) .garden-center{order:1;flex:1;min-height:0;width:100%}.garden-layout:not(.welcome) .garden-right{display:none}.garden-mobile-seeds{display:flex;flex-shrink:0;gap:6px;margin:0 0 5px}.garden-mobile-seeds button{display:flex;flex:1;justify-content:center;align-items:center;gap:5px;font-size:10px;min-height:34px;padding:3px;background:#43493345;color:var(--garden-ink);border:1px solid var(--garden-line);border-radius:4px}.garden-mobile-seeds button[aria-pressed=true]{border-color:var(--garden-gold)}.garden-mobile-seeds img{width:22px;height:27px}
+ .garden-world,.welcome .garden-world{width:min(100%,calc((100cqh - 103px)*1.18));min-height:0;aspect-ratio:auto;max-width:none}.garden-world-sign{width:140px;padding:8px;bottom:0}.garden-world-sign span{font-size:7px}.garden-world-sign small{font-size:6px}.garden-plot-label{font-size:7px}.garden-actionbar{padding:8px 0 2px;gap:5px}.garden-actionbar .garden-button{font-size:10px!important;padding:5px 8px;min-height:34px}.garden-guidance{font-size:8px;line-height:1.5;margin:3px 0}.garden-threat-banner{top:42px;padding:5px 8px}.garden-threat-banner strong{font-size:12px}.garden-threat-banner span{font-size:7px}.garden-threat-banner img{width:20px}.garden-season-strip{display:block;margin-top:5px;padding-top:4px}.garden-season-strip>div:first-child{display:none}.garden-seasons{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}.garden-seasons button{padding:3px;gap:4px;min-width:0}.garden-seasons button>img{width:18px;height:33px}.garden-seasons button strong{font-size:10px;margin:0}.garden-seasons button small{font-size:6px;white-space:normal}.garden-seasons button>svg{width:10px;top:0;right:0}.garden-bottom-tools{font-size:7px;min-height:22px}.garden-bottom-tools button{font-size:9px}
+ .welcome .garden-left{display:none}.welcome .garden-center{order:0;flex:1;min-height:0}.welcome .garden-world{width:min(100%,calc((100cqh - 20px)*1.2))}.welcome .garden-actionbar{display:none}.welcome .garden-right{order:1;display:block;flex-shrink:0;width:100%}.garden-join{padding:14px 17px;display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}.garden-join h2{grid-column:1 / -1;font-size:21px;text-align:left;margin:0 0 3px}.garden-join h2 br{display:none}.garden-join label[for=garden-name]{grid-column:1;grid-row:2}.garden-join #garden-name{grid-column:1;grid-row:3}.garden-join label[for=garden-room]{grid-column:2;grid-row:2}.garden-join #garden-room{grid-column:2;grid-row:3}.garden-join label,.garden-join legend{font-size:9px;margin:0}.garden-join input:not([type=radio]){font-size:12px;padding:8px;min-width:0}.garden-join fieldset{grid-column:1 / -1;display:flex;gap:12px;margin:2px 0 4px}.garden-join fieldset legend{display:none}.garden-join fieldset label{font-size:9px;margin:0;gap:4px;flex:1}.garden-join .garden-button{grid-column:1 / -1;min-height:34px;font-size:11px!important}.garden-try{grid-column:1 / -1;font-size:9px!important;margin:2px auto 0}.garden-field-error{grid-column:1 / -1;font-size:9px}.garden-neighbors,.garden-ranking{padding:15px 16px}.garden-ranking>h2,.garden-neighbors>h2{font-size:22px}.garden-neighbor{padding:9px 0}.garden-neighbor>img{height:45px;width:35px}.garden-neighbor h3{font-size:16px}.garden-neighbor p,.garden-neighbor-plants{font-size:8px}.garden-neighbor .garden-button{font-size:9px!important;padding:6px}.garden-ranking td{padding:7px 5px}.garden-ranking td:last-child{font-size:18px}.garden-result-story p{font-size:9px}.garden-toast{top:53px;bottom:auto;padding:8px 10px}
+}
+@media(max-width:760px) and (max-height:700px){.garden-header{height:42px;min-height:42px}.garden-wordmark span{display:none}.garden-topline h1{font-size:17px}.garden-topline .garden-small-label{display:none}.garden-seasons button>img{display:none}.garden-seasons button{min-height:28px}.garden-season-strip{padding-top:2px}.garden-layout:not(.welcome) .garden-left{min-height:38px}.garden-guidance{display:none}.garden-world{width:min(100%,calc((100cqh - 78px)*1.18))}.garden-ranking td{padding:4px}.garden-ranking>h2{font-size:18px}.garden-ranking .garden-small-label,.garden-result-story h3{display:none}.garden-ranking>p{font-size:9px}.garden-rank-tabs{margin:7px 0}.garden-neighbors>p{font-size:9px}.garden-join h2{font-size:18px}}
+
+/* Fifteen-minute match: persistent season context and explicit encounters. */
+.season-progress{display:flex;align-items:center;gap:12px;flex-shrink:0;margin:0 0 10px;font-size:9px;color:var(--garden-gold)}
+.season-progress>div{height:3px;background:#b9a57930;flex:1;overflow:hidden}
+.season-progress i{display:block;height:100%;background:#dfc280;transition:width .25s linear}
+.garden-clock{grid-template-columns:20px auto}.garden-clock span{white-space:nowrap}
+.join-duration{font-size:11px;margin:15px 0!important;color:#6c5a3c}
+.garden-seasons button[aria-current=step]{border-color:#dfc280;background:#d4bc7920;box-shadow:inset 0 -2px #dfc280}
+.garden-neighbor small{display:block;font-size:9px;line-height:1.5;margin-top:3px;max-width:360px}
+.garden-neighbor-plants{font-size:9px}.garden-neighbors{overflow:auto}
+.garden-defense h2{font-size:14px}.garden-count b{font-variant-numeric:tabular-nums}
+.season-announcement{position:fixed;z-index:55;left:50%;top:90px;transform:translateX(-50%);display:flex;gap:18px;align-items:center;width:min(490px,calc(100vw - 30px));padding:18px 22px;background:#e9dbb8;color:#443b29;border:2px solid #c7aa70;box-shadow:0 16px 60px #10150bcc;border-radius:6px;animation:season-enter .35s ease-out}
+.season-announcement>img{width:66px;height:120px;object-fit:contain}.season-announcement small{font-size:9px;letter-spacing:.12em}.season-announcement h2{font-size:30px;margin:3px 0}.season-announcement p{font-size:11px}
+.season-announcement button{display:flex;align-items:center;gap:8px;background:#3b432d;color:#f0dfb9;border:0;padding:7px 14px;margin-top:10px;border-radius:3px;font-size:11px}
+.gong-warning{background:#783c2bee;border:1px solid #dfab6d;color:#fff0ce;animation:gong-pulse 1s ease-in-out infinite}
+.garden-threat-banner.gong-warning span{font-size:10px}.garden-threat-banner.gong-warning strong{font-size:18px}
+.duel-traveler{position:absolute;bottom:18%;left:10%;width:100px;z-index:32;pointer-events:none;animation:thief-cross 2s ease-out both}
+.duel-traveler img{height:140px}.duel-traveler span{font-size:9px;white-space:nowrap;background:#683b26;color:#fff0c9;padding:4px}
+.encounter-dialog{width:min(600px,calc(100vw - 24px))!important;padding:22px 28px!important}
+.encounter-dialog>h2{font-size:25px}.encounter-heading{display:flex;gap:18px;align-items:center;margin:10px 0}
+.encounter-heading>img{height:85px;width:65px;object-fit:contain}.encounter-heading strong{font-size:36px;font-variant-numeric:tabular-nums;color:#675532;line-height:1.2}.encounter-heading p{font-size:11px}
+.encounter-heading .urgent{color:#a33e2a}.quiz-timebar{height:4px;background:#b9a57950}.quiz-timebar i{display:block;height:100%;background:#a77337;transition:width .25s linear}
+.quiz-question{font-size:19px!important;line-height:1.5;margin:16px 0!important}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.quiz-options button{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #af9b74;background:#f8edcf;color:#3d382c;padding:12px;font-size:12px;border-radius:4px;min-height:65px;line-height:1.5}
+.quiz-options button b{display:grid;place-items:center;width:24px;height:24px;flex-shrink:0;background:#8272461a}
+.quiz-options button:hover:not(:disabled){background:#e4d4ac;border-color:#635e39}.quiz-options button[aria-pressed=true]{background:#424930;color:#fff0ca;border-color:#424930;opacity:1}
+.outcome-summary{font-size:17px;margin-bottom:16px!important}.answer-reveal{font-weight:600;margin:10px 0!important}.outcome-continue{margin-top:20px}
+.thief-arrival{animation:thief-arrive .8s ease-out}
+@keyframes thief-cross{from{left:4%;opacity:0;transform:translateY(-5px)}to{left:68%;opacity:1;transform:translateY(0)}}
+@keyframes thief-arrive{from{transform:translateX(-65px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes season-enter{from{opacity:0;translate:0 -16px}to{opacity:1;translate:0 0}}
+@keyframes gong-pulse{50%{box-shadow:0 0 20px #c9703233}}
+@media(max-height:700px){.season-progress{margin-bottom:6px;font-size:8px}.encounter-heading{margin:6px 0}.encounter-heading>img{height:55px}.quiz-question{margin:10px 0!important;font-size:17px!important}.quiz-options button{min-height:50px;padding:8px}.encounter-dialog{padding:16px 22px!important}.encounter-dialog .garden-dialog-note{margin-top:10px;font-size:10px}}
+@media(max-width:760px){
+ .season-progress{font-size:7px;gap:6px}.season-progress>span:last-child{white-space:nowrap}.garden-clock span{font-size:7px;max-width:100px;white-space:normal}
+ .join-duration{grid-column:1/-1;font-size:9px;margin:3px 0!important}
+ .season-announcement{top:65px;padding:12px;gap:12px}.season-announcement h2{font-size:24px}.season-announcement>img{width:48px;height:90px}
+ .garden-neighbor small{font-size:8px}.garden-neighbors{padding:12px!important}.garden-neighbor{gap:7px}.garden-neighbor>img{width:27px}
+ .encounter-dialog{padding:16px!important}.encounter-dialog>h2{font-size:21px}.quiz-options{grid-template-columns:1fr}.quiz-options button{min-height:44px;padding:8px 10px;font-size:11px}.quiz-question{font-size:16px!important;line-height:1.4}
+ .encounter-heading>img{height:50px}.encounter-heading strong{font-size:28px}.encounter-heading p{font-size:10px}.duel-traveler{width:65px}.duel-traveler img{height:95px}
+ .garden-layout:not(.welcome) .garden-defense{max-width:133px}.garden-defense .garden-button{font-size:8px!important}
+}
+@media(prefers-reduced-motion:reduce){.season-announcement,.gong-warning,.duel-traveler,.thief-arrival{animation:none}.season-progress i,.quiz-timebar i{transition:none}}
+
+.lobby-app{height:100dvh;overflow:auto}.lobby-app .garden-header{flex-shrink:0}
+.lobby-layout{width:min(1060px,92%);margin:auto;display:grid;grid-template-columns:1.2fr 1fr;gap:70px;align-items:center;padding:28px 0}
+.lobby-intro h1{font-size:clamp(28px,3vw,44px);line-height:1.25;margin:12px 0}.lobby-intro>img{height:220px;width:100%;object-fit:contain;margin:15px 0}.lobby-intro p{font-size:12px;color:var(--garden-muted);line-height:1.9}
+.lobby-panel h2{font-size:30px;margin-bottom:15px}.lobby-panel label{display:block;font-size:11px;margin:10px 0 6px}.lobby-panel input{display:block;width:100%;padding:11px 13px;border:1px solid #b09a71;border-radius:4px;background:#faf0d5;color:#403928;margin-bottom:12px;font:inherit}
+.lobby-panel>.garden-button{width:100%;margin:4px 0}.lobby-divider{text-align:center;font-size:10px;color:#8d7650;padding:15px 0 4px}
+.lobby-code{letter-spacing:.13em;font-variant-numeric:tabular-nums}.lobby-players{list-style:none;padding:0;margin:20px 0}.lobby-players li{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #99845c55;padding:9px 0}.lobby-players small{color:#817049}.lobby-wait{margin:20px 0!important;font-style:italic}.lobby-error{margin-top:12px!important;color:#983d28;font-size:12px}
+.quiz-explanation{font-size:12px;margin:12px 0}.quiz-explanation summary{cursor:pointer;color:#766038}
+@media(max-width:760px){.lobby-layout{grid-template-columns:1fr;gap:16px;padding:20px 0}.lobby-intro h1{font-size:26px}.lobby-intro>img{display:none}.lobby-intro p{font-size:11px}.lobby-panel{padding:24px}.lobby-app .garden-wordmark{font-size:16px!important}}
+@media(max-height:700px) and (min-width:761px){.lobby-intro>img{height:150px}.lobby-layout{padding:12px 0}.lobby-panel{padding:20px 25px}.lobby-divider{padding:7px 0}}
+.quiz-exit{display:inline-block;margin-top:12px;color:#75603d;font-size:11px;text-decoration:underline}
+.room-entry.garden-join{padding:18px 20px;width:100%;max-height:100%;overflow:auto}
+.room-entry.garden-join h2{font-size:clamp(24px,2.2vw,34px);line-height:1.05;margin:0 0 13px}
+.room-entry.garden-join label{display:block;margin:8px 0 4px;font-size:11px}
+.room-entry.garden-join input{width:100%;min-width:0;height:35px;padding:7px 10px;margin:0;font-size:12px}
+.room-entry.garden-join .garden-button{min-height:34px;margin-top:12px;width:100%;justify-content:center}
+.room-entry .room-join-existing{border-top:1px solid #9b81514d;margin-top:16px;padding-top:13px}
+.room-entry .room-join-existing h3{font-size:14px;font-weight:500;margin:0 0 4px}
+.room-entry-fields{display:grid;grid-template-columns:1.2fr 1fr;gap:10px}
+.room-entry .garden-try{margin-top:9px;font-size:10px}
+.room-entry-note{font-size:11px;line-height:1.5;margin:8px 0}
+.room-share-code{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin:12px 0;border-block:1px solid #9b81514d;padding:10px 0}
+.room-share-code strong{font-size:22px;letter-spacing:.15em}
+.room-entry .lobby-players{max-height:170px;overflow:auto}
+@media(min-width:900px){.is-welcome .garden-layout.welcome{grid-template-columns:minmax(150px,.7fr) minmax(0,1.8fr) minmax(280px,1fr)}}
+@media(max-height:740px) and (min-width:900px){.room-entry.garden-join{padding:12px 16px}.room-entry.garden-join h2{font-size:25px;margin-bottom:8px}.room-entry.garden-join label{margin-top:6px}.room-entry.garden-join input{height:31px}.room-entry.garden-join .garden-button{margin-top:8px;min-height:30px}.room-entry .room-join-existing{margin-top:10px;padding-top:9px}}

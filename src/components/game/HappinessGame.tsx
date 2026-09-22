@@ -1,0 +1,128 @@
+'use client';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock3, HelpCircle, Plus, RotateCcw, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { GAME_ASSETS as A, plantAsset, type GameAsset, type PlantType } from '@/lib/assets-manifest';
+import { createGame } from '@/lib/game/engine';
+import { PLANTS, PLANT_TYPES, SEASONS, balanceScore, busy, canBuild, counts, elapsed, formatTime, isFinished, multiplier, progress, readyCount, remainingSeconds, seasonAt, stageOf, totalScore } from '@/lib/game/rules';
+import { raidBlock } from '@/lib/game/pvp';
+import { questionById } from '@/lib/game/questions';
+import type { GameState, Mode } from '@/lib/game/types';
+import { useGardenGame } from './useGardenGame';
+
+function Art({asset,className='',alt=''}:{asset:GameAsset;className?:string;alt?:string}){return <img src={A[asset]} alt={alt} className={className} draggable={false}/>;}
+function Modal({open,onOpenChange,title,children,wide=false,forced=false}:{open:boolean;onOpenChange:(open:boolean)=>void;title:string;children:React.ReactNode;wide?:boolean;forced?:boolean}){
+ return <Dialog.Root open={open} onOpenChange={forced?()=>{}:onOpenChange}><Dialog.Portal><Dialog.Overlay className="garden-modal-overlay"/><Dialog.Content className={'garden-modal '+(wide?'wide ':'')+(forced?'encounter-dialog':'')} onEscapeKeyDown={e=>{if(forced)e.preventDefault();}} onPointerDownOutside={e=>{if(forced)e.preventDefault();}}><Dialog.Title>{title}</Dialog.Title><Dialog.Description className="garden-sr">Thông tin và thao tác trong trò chơi. Đồng hồ tiếp tục chạy khi cửa sổ này mở.</Dialog.Description>{!forced&&<Dialog.Close className="garden-close" aria-label="Đóng"><X size={20}/></Dialog.Close>}{children}{forced&&<a className="quiz-exit" href="/">Về ba cuốn sách</a>}</Dialog.Content></Dialog.Portal></Dialog.Root>;
+}
+const fmt=(n:number)=>n.toLocaleString('vi-VN',{maximumFractionDigits:2});
+export type GameConnection=ReturnType<typeof useGardenGame>;
+export function HappinessGame({connection,welcomePanel}:{connection?:GameConnection;welcomePanel?:React.ReactNode}){
+ const local=useGardenGame(!connection&&!welcomePanel);
+ const {state,ready,now:liveNow,error,notice,start,dispatch,reset}=connection||local;
+ const [name,setName]=useState(''),[room,setRoom]=useState('VUON-202'),[selected,setSelected]=useState<PlantType>('doc-lap'),[nameError,setNameError]=useState('');
+ const [tab,setTab]=useState<'garden'|'neighbors'|'ranking'>('garden'),[help,setHelp]=useState(false),[cards,setCards]=useState(false),[journal,setJournal]=useState(false),[resetOpen,setResetOpen]=useState(false),[lore,setLore]=useState<number|null>(null),[inspect,setInspect]=useState<number|null>(null);
+ const [preview,setPreview]=useState<GameState|null>(null);
+ useEffect(()=>setPreview(createGame('Vườn của bạn','showcase','VUON-202',Date.now())),[]);
+ const game=state||preview,own=game?.gardens[0];
+ const now=state?liveNow:preview?.lastTick||liveNow;
+ const lookup=(id:string)=>game?.questions?.find(q=>q.id===id)||questionById(id);
+ const ended=state?isFinished(state,now):false,season=game?seasonAt(game,now):1;
+ const monster=state?.monsters.find(m=>m.garden==='you');
+ const duel=state?.duels.find(d=>d.attacker==='you'||d.defender==='you');
+ const locked=state?busy(state,'you'):false;
+ const activeQuiz=!!duel||!!monster&&now>=monster.arrivesAt;
+ useEffect(()=>{if(ended)setTab('ranking');},[ended]);
+ useEffect(()=>{if(locked){setHelp(false);setCards(false);setJournal(false);setInspect(null);setLore(null);setResetOpen(false);}},[locked]);
+ useEffect(()=>{
+  if(!state?.seasonNotice||activeQuiz)return;
+  const id=setTimeout(()=>dispatch({type:'dismiss-season'}),5500);
+  return()=>clearTimeout(id);
+ },[state?.seasonNotice,activeQuiz,dispatch]);
+ const startMatch=(mode:Mode)=>{
+  if(!name.trim()){setNameError('Đặt tên khu vườn trước nhé.');return;}
+  start(name,mode,room);setTab('garden');setSelected('doc-lap');setNameError('');
+ };
+ if((!ready&&!welcomePanel)||!game||!own)return <main className="happiness-app garden-loading"><Art asset="ui/plant"/><p>Đang mở cổng khu vườn…</p></main>;
+ const rankList=[...game.gardens].sort((a,b)=>totalScore(b)-totalScore(a)||a.id.localeCompare(b.id));
+ const seasonLeft=ended?0:120-(elapsed(game,now)%120);
+ const question=duel?lookup(duel.question):monster?lookup(monster.question):null;
+ const quizLeft=duel?(duel.endsAt-now)/1000:monster?(monster.endsAt-now)/1000:0;
+ const answered=!!duel&&'you' in duel.answers;
+ const outcome=state?.outcome;
+ const operate=(slot:number)=>{
+  if(!state||ended||locked)return;
+  const p=own.plots[slot];
+  if(!p)dispatch({type:'plant',slot,plant:selected});
+  else if(progress(game,p,now)>=1)dispatch({type:'harvest',slot});
+  else setInspect(slot);
+ };
+ return <main className={'happiness-app '+(state?'is-playing':'is-welcome')}>
+  <header className="garden-header"><a href="/" className="garden-back" aria-label="Về ba cuốn sách"><ArrowLeft size={16}/><span>Ba cuốn sách</span></a><Link href="/game" className="garden-wordmark">Steal a Happiness<span>BA GIÁ TRỊ · MỘT KHU VƯỜN</span></Link><button className="garden-help" disabled={locked} onClick={()=>setHelp(true)} aria-label="Cách chơi"><HelpCircle size={17}/><span>Cách chơi</span></button></header>
+  <div className="garden-shell">
+   <div className="garden-topline"><div><span className="garden-small-label">{state?'PHÒNG / '+state.room:'8 PHÚT · BỐN MÙA · MỘT BẢNG ĐIỂM'}</span><h1>{state?ended?'Mùa đã khép lại.':'Vườn của '+own.name:'Hạnh phúc cần được vun trồng.'}</h1></div><div className="garden-session"><span className="mock-badge">{connection||welcomePanel?"Chơi cùng bạn bè":"Chơi thử với bot"}</span><div className="garden-clock"><Clock3 size={17}/><strong>{state?formatTime(480-elapsed(state,now)):'08:00'}</strong><span>{ended?'Hoàn thành':'Mùa '+season+' · '+SEASONS[season-1].name}</span></div></div></div>
+   {error&&<p className="garden-error" role="status">{error}</p>}
+   {state&&<><div className="season-progress" aria-label={'Mùa '+season+' còn '+formatTime(seasonLeft)}><span>MÙA {season} / 4 · {SEASONS[season-1].name}</span><div><i style={{width:(ended?100:(120-seasonLeft)/120*100)+'%'}}/></div><span>{ended?'Kết thúc':formatTime(seasonLeft)+' → mùa '+(season<4?season+1:'cuối kết thúc')}</span></div><nav className="garden-tabs" aria-label="Khu vực trò chơi">{[['garden','Khu vườn','ui/plant'],['neighbors','Đấu trộm','ui/steal'],['ranking','Bảng xếp hạng','ui/trophy']].map(([id,title,asset])=><button key={id} aria-current={tab===id?'page':undefined} onClick={()=>setTab(id as typeof tab)}><Art asset={asset as GameAsset}/>{title}</button>)}<button className="garden-reset" disabled={locked} onClick={()=>setResetOpen(true)}><RotateCcw size={14}/>{connection?"Rời phòng":"Ván mới"}</button></nav></>}
+   <div className={'garden-layout '+(!state?'welcome':'')}>
+    <aside className="garden-left">
+     {!state?<section className="garden-welcome-copy"><span className="garden-chapter">GIEO · HÁI · HIỂU · BẢO VỆ</span><h2>Một mảnh đất.<br/>Ba điều đáng giữ.</h2><p>Trồng ba loại cây. Trả lời quiz đuổi quái. Đấu trí để trộm điểm.</p><div className="garden-welcome-rule"><Art asset="items/balance"/><p>Hái đều ba loại để tăng hệ số từ <strong>0,5× lên 2×.</strong></p></div><button className="garden-text-link" onClick={()=>setHelp(true)}>Xem luật chơi <ArrowRight size={15}/></button><p className="garden-local-note">{welcomePanel?"Tạo phòng, mời bạn bè và cùng bắt đầu. Mỗi người một khu vườn.":"Chơi thử với bot. Ván lưu trong tab này."}</p></section>:<>
+      <section className="garden-wallet"><Art asset="items/score"/><div><span>Điểm Tổng</span><strong>{fmt(totalScore(own))}</strong><small>{fmt(own.score)} gốc × {fmt(multiplier(own))}</small></div></section>
+      <section className="garden-balance"><div className="garden-balance-heading"><Art asset="items/balance"/><h2>Cân bằng đã hái</h2><strong>×{fmt(multiplier(own))}</strong></div>{PLANT_TYPES.map(type=><div className="garden-count" key={type}><span>{PLANTS[type].name}</span><b>{own.harvests[type]} quả</b></div>)}<p>{balanceScore(own)}/100 · Tính theo số quả đã hái, không theo cây đang trồng.</p></section>
+      <section className="garden-defense"><h2><ShieldCheck size={17}/>Rào {own.fence}/3 · Gỗ {own.wood}/3</h2><p>{own.fence?'Giảm 50% thiệt hại đấu trộm. Mỗi lần chặn mất 1 độ bền.':'Đổi quả lấy gỗ khi thu hoạch. Đủ 3 gỗ để xây.'}</p><button className="garden-button muted" disabled={ended||locked||!canBuild(own)} onClick={()=>dispatch({type:'build'})}><Art asset="ui/defense"/>{own.fence?'Rào '+own.fence+'/3':'Xây rào · '+own.wood+'/3 gỗ'}</button>{own.trap&&<span className="garden-buff">Bẫy đang chờ kẻ trộm tiếp theo</span>}</section>
+     </>}
+    </aside>
+    <section className="garden-center" aria-label="Sân chơi">
+     {(tab==='garden'||!state)&&<>
+      {state&&<div className="garden-mobile-seeds" role="group" aria-label="Chọn cây để trồng">{PLANT_TYPES.map(type=><button key={type} aria-pressed={selected===type} disabled={ended||locked} onClick={()=>setSelected(type)}><img src={plantAsset(type,4)} alt=""/>{PLANTS[type].name}</button>)}</div>}
+      {monster&&now<monster.arrivesAt&&<div className="garden-threat-banner gong-warning" role="alert"><Art asset="ui/gong"/><p><strong>Chiêng báo động · {formatTime((monster.arrivesAt-now)/1000)}</strong><span>{monster.kind==='doi'?'Giặc Đói':monster.kind==='dot'?'Giặc Dốt':'Giặc cấp cao'} sắp tới. Chuẩn bị quiz 12 giây!</span></p></div>}
+      <div className={'garden-world '+(duel?'raiding':'')}>
+       <Art asset="tiles/landscape" className="garden-distant"/><div className="garden-world-haze"/><Art asset="tiles/river-house" className="garden-house"/><Art asset="tiles/bush" className="garden-bush left"/><Art asset="tiles/lotus" className="garden-lotus"/><Art asset="tiles/rocks" className="garden-rocks"/><Art asset="characters/gardener" className="garden-character"/>
+       {own.fence>0&&<><Art asset="buildings/fence-quyen" className="garden-fence one"/><Art asset="buildings/fence-quyen" className="garden-fence two"/><Art asset="buildings/gate-pham-gia" className="garden-gate"/></>}
+       <div className="garden-plots" role="group" aria-label="9 ô đất, chọn ô trống để gieo, chọn cây chín để hái">{own.plots.map((p,i)=>{
+        const ripe=!!p&&progress(game,p,now)>=1,remaining=p?remainingSeconds(game,p,now):0;
+        return <button key={i} className={'garden-plot '+(p?'planted':'empty')+' '+(ripe?'ripe':'')+' '+(p?.type||'')} style={{'--plot-x':(50+(i%3-Math.floor(i/3))*16.7)+'%','--plot-y':(31+(i%3+Math.floor(i/3))*11.5)+'%',zIndex:10+i%3+Math.floor(i/3)} as React.CSSProperties} disabled={!state||ended||locked} onClick={()=>operate(i)} aria-label={'Ô '+(i+1)+': '+(p?PLANTS[p.type].name+', '+(ripe?'đã chín, bấm để thu hoạch':'còn '+Math.ceil(remaining)+' giây'):'đất trống, gieo '+PLANTS[selected].name)}><Art asset="tiles/soil-empty" className="garden-soil"/>{p?<img src={plantAsset(p.type,stageOf(game,p,now))} className="garden-plant" alt="" draggable={false}/>:<span className="garden-empty-mark"><Plus size={19}/></span>}{ripe&&<Art asset="items/harvest-glow" className="garden-ripe-glow"/>}<span className="garden-plot-label">{p?ripe?'Hái · '+p.remaining+'đ':formatTime(remaining):'Ô '+(i+1)}</span></button>;
+       })}</div>
+       {monster&&now>=monster.arrivesAt&&<div className="garden-monster"><Art asset={monster.kind==='doi'?'characters/doi-attack':'characters/dot-attack'}/></div>}
+       {duel&&<div className="duel-traveler" key={duel.id}><Art asset="characters/thief-run"/><span>{duel.attacker==='you'?'Đang sang vườn đối thủ':'Có kẻ đột nhập!'}</span></div>}
+       <div className="garden-world-sign"><span>KHU VƯỜN CỦA BẠN</span><small>{counts(own).join(' / ')} cây · 9 ô đất</small></div>
+      </div>
+      <div className="garden-actionbar">{state?<><button className="garden-button primary" disabled={ended||locked||readyCount(state,own,now)===0} onClick={()=>dispatch({type:'harvest-all'})}><Art asset="ui/harvest"/>Thu hoạch {readyCount(state,own,now)}</button><button className="garden-button muted" disabled={ended||locked||season<2} onClick={()=>setTab('neighbors')}><Art asset="ui/steal"/>{season<2?'Mở mùa 2':'Trộm '+(own.raidSeason===season?'0':'1')+'/1'}</button><button className="garden-button muted" disabled={ended||locked} onClick={()=>setCards(true)}><Art asset="items/knowledge"/>Thẻ {own.cards.growth+own.cards.trap}</button></>:<p>8 phút <ChevronRight size={13}/> 4 mùa <ChevronRight size={13}/> Một Điểm Tổng</p>}</div>
+      {state&&<div className="garden-guidance"><Sparkles size={14}/><p>{ended?'Ván đã kết thúc. Xem Điểm Tổng trên bảng xếp hạng.':locked?'Đang có sự kiện: hoàn thành quiz hoặc lựa chọn trước.':'Chọn '+PLANTS[selected].name+' → bấm ô trống. Hái đều ba loại để tăng hệ số.'}</p></div>}
+     </>}
+     {tab==='neighbors'&&state&&<div className="garden-paper garden-neighbors"><span className="garden-small-label">MỖI MÙA MỘT LƯỢT · QUIZ 8 GIÂY</span><h2>Đấu trí, trộm điểm.</h2><p>Cược 20% Điểm Tổng. Bạn đúng: 70% nếu đối thủ sai, 30% nếu cả hai đúng. Bạn sai: đối thủ đúng có 50% phản đòn.</p>{game.gardens.filter(g=>g.id!=='you').map(g=>{
+      const block=raidBlock(state,own,g,now);
+      return <article className="garden-neighbor" key={g.id}><Art asset={'characters/'+g.avatar as GameAsset}/><div><h3>{g.name} <span>{g.bot?"BOT":"NGƯỜI CHƠI"}</span></h3><p><strong>{fmt(totalScore(g))} Điểm Tổng</strong> · Rào {g.fence}/3</p><div className="garden-neighbor-plants">{PLANT_TYPES.map(t=>PLANTS[t].name+': '+g.harvests[t]+' quả').join(' · ')}</div><small>{block||'Có thể thách đấu · lấy tối đa '+Math.floor(totalScore(g)*.2*(g.fence?.5:1))+'đ'}</small></div><button className="garden-button primary" disabled={ended||!!block} onClick={()=>{dispatch({type:'start-raid',target:g.id});setTab('garden');}}>Đấu <ArrowRight size={14}/></button></article>;
+     })}<p className="garden-lock-note">Lượt mùa {season}: {own.raidSeason===season?'đã dùng':'còn 1'}. Phòng thủ không tiêu lượt. Vườn vừa đấu nghỉ 20 giây.</p></div>}
+     {tab==='ranking'&&state&&<div className="garden-paper garden-ranking"><span className="garden-small-label">{ended?'KẾT QUẢ VÁN CHƠI':'CẬP NHẬT TRONG VÁN'}</span><h2>Một bảng điểm. Ba giá trị.</h2><p>Điểm Tổng = điểm gốc quy đổi × hệ số cân bằng. Trộm chuyển trực tiếp Điểm Tổng; hòa điểm cùng hạng.</p><table><thead><tr><th>Hạng</th><th>Khu vườn</th><th>Điểm Tổng</th></tr></thead><tbody>{rankList.map((g,i)=><tr key={g.id} className={g.id==='you'?'is-you':''}><td>{rankList.findIndex(x=>totalScore(x)===totalScore(g))+1}</td><td><span>{g.name}</span><small>{g.id==='you'?'BẠN · ':g.bot?'BOT · ':''}×{fmt(multiplier(g))}</small></td><td>{fmt(totalScore(g))}</td></tr>)}</tbody></table>{ended&&<div className="garden-result-story"><p>Bạn đã hái {PLANT_TYPES.map(t=>own.harvests[t]+' '+PLANTS[t].name).join(', ')}. Cân bằng {balanceScore(own)}/100.</p><button className="garden-button primary" onClick={()=>setResetOpen(true)}>Gieo một mùa mới <ArrowRight size={16}/></button></div>}</div>}
+    </section>
+    <aside className="garden-right">{!state?(welcomePanel||<form className="garden-paper garden-join" onSubmit={e=>{e.preventDefault();startMatch('standard')}}><h2>Mảnh vườn này<br/>đang chờ bạn.</h2><label htmlFor="garden-name">Tên người chơi</label><input id="garden-name" value={name} onChange={e=>{setName(e.target.value);setNameError('')}} maxLength={24} placeholder="Tên khu vườn" autoComplete="nickname"/>{nameError&&<p className="garden-field-error" role="alert">{nameError}</p>}<label htmlFor="garden-room">Mã phòng mô phỏng</label><input id="garden-room" value={room} onChange={e=>setRoom(e.target.value)} maxLength={16}/><p className="join-duration">8 phút · 4 mùa × 2 phút</p><button className="garden-button primary" type="submit">Bắt đầu gieo mầm <ArrowRight size={16}/></button><button className="garden-try" type="button" onClick={()=>startMatch('showcase')}>Thử vườn mẫu · có sẵn cây và thẻ</button></form>):<section className="garden-paper garden-seedbox"><span className="garden-small-label">CHỌN HẠT · BẤM Ô TRỐNG</span><h2>Hôm nay, trồng gì?</h2>{PLANT_TYPES.map(type=><button className={'garden-seed '+(selected===type?'selected':'')} key={type} aria-pressed={selected===type} disabled={ended||locked} onClick={()=>setSelected(type)}><img src={plantAsset(type,4)} alt=""/><span><strong>{PLANTS[type].name}</strong><small>{formatTime(PLANTS[type].seconds)} · {PLANTS[type].points} điểm gốc</small><em>{selected===type?'Đang chọn · trồng miễn phí':PLANTS[type].description}</em></span>{selected===type?<Check size={16}/>:<Plus size={16}/>}</button>)}<p>Cả ba loại đã mở. Hái đều để tăng hệ số. Sát thương quái chỉ giảm giá trị quả, không đặt lại thời gian.</p></section>}</aside>
+   </div>
+   <footer className="garden-season-strip"><div><span className="garden-small-label">BỐN MÙA · MỖI MÙA 2:00</span><p>Một hành trình,<br/>vì con người.</p></div><div className="garden-seasons">{SEASONS.map((s,i)=><button key={s.name} className={season===i+1?'current':''} aria-current={season===i+1?'step':undefined} onClick={()=>setLore(i)}><Art asset={'seasons/season-'+(i+1) as GameAsset}/><span><small>MÙA {i+1} · {s.date}</small><strong>{s.name}</strong></span>{season>i+1&&<Check size={12}/>}</button>)}</div></footer>
+   <div className="garden-bottom-tools"><span>{connection||welcomePanel?"2–8 người · 8 phút · 4 mùa":"Chơi thử · Lưu trong tab này"}</span>{state&&<button disabled={locked} onClick={()=>setJournal(true)}>Nhật ký <ChevronRight size={13}/></button>}</div>
+  </div>
+  {notice&&!activeQuiz&&!state?.woodChoice&&<div key={notice.id} className="garden-toast" role="status"><Art asset="items/seed"/><p>{notice.text}</p></div>}
+  {!!state?.seasonNotice&&!activeQuiz&&!state.woodChoice&&!ended&&<div className="season-announcement" role="status"><Art asset={'seasons/season-'+state.seasonNotice as GameAsset}/><div><small>CHƯƠNG {state.seasonNotice} · 2 PHÚT</small><h2>{SEASONS[state.seasonNotice-1].name}</h2><p>{SEASONS[state.seasonNotice-1].unlock}</p><button onClick={()=>dispatch({type:'dismiss-season'})}>Tiếp tục chơi <ArrowRight size={14}/></button></div></div>}
+  <Modal open={activeQuiz&&!ended} onOpenChange={()=>{}} forced title={duel?(duel.attacker==='you'?'Bạn đang đi trộm':'Có kẻ trộm điểm của bạn!'):monster?.kind==='doi'?'Đuổi Giặc Đói':monster?.kind==='boss'?'Giặc cấp cao tấn công':'Đuổi Giặc Dốt'}>
+   {question&&<><div className="encounter-heading"><Art asset={duel?'characters/thief-run':monster?.kind==='doi'?'characters/doi-attack':'characters/dot-attack'} className={duel?'thief-arrival':''}/><div><strong className={quizLeft<4?'urgent':''}>{formatTime(quizLeft)}</strong><p>{duel?'Quiz chung · đáp án được giữ kín tới khi hết giờ':question.topic==='people'?'Chủ đề: Con người / Hạnh phúc':'Chủ đề: Độc lập / Tự do'}</p></div></div><div className="quiz-timebar"><i style={{width:Math.max(0,quizLeft/(duel?8:12)*100)+'%'}}/></div><h3 className="quiz-question">{question.text}</h3><div className="quiz-options">{question.options.map((text,i)=><button key={i} disabled={answered} aria-pressed={duel?.answers.you===i} onClick={()=>dispatch(duel?{type:'answer-duel',id:duel.id,answer:i}:{type:'answer-monster',id:monster!.id,answer:i})}><b>{String.fromCharCode(65+i)}</b>{text}</button>)}</div><p className="garden-dialog-note">{answered?'Đã khóa đáp án. Kết quả công bố khi hết 8 giây.':duel?'Thua có thể mất 20% Điểm Tổng. Hàng rào giảm một nửa thiệt hại.':'Đúng: an toàn, 30% cơ hội nhận thẻ. Sai/hết giờ: giảm 40% điểm quả bị nhắm.'}{monster?.kind==='boss'?' Giặc cấp cao có thêm 15% cơ hội phá quả Độc lập.':''}</p></>}
+  </Modal>
+  <Modal open={!!outcome&&!activeQuiz&&!state?.woodChoice&&!ended} onOpenChange={open=>{if(!open)dispatch({type:'dismiss-outcome'});}} title={outcome?.title||''}>
+   {outcome&&<><p className="outcome-summary">{outcome.text}</p>{outcome.question&&<><p className="answer-reveal">Đáp án: {lookup(outcome.question).options[lookup(outcome.question).answer]}</p><details className="quiz-explanation"><summary>Vì sao?</summary><p>{lookup(outcome.question).explanation}</p><small>{lookup(outcome.question).source}</small></details></>}<button className="garden-button primary outcome-continue" onClick={()=>dispatch({type:'dismiss-outcome'})}>Về vườn</button></>}
+  </Modal>
+  <Modal open={!!state?.woodChoice&&!ended} onOpenChange={()=>{}} forced title="Giữ điểm hay lấy gỗ?">{state?.woodChoice&&<><p>Bạn tìm thấy 1 khúc gỗ. Đổi cả quả ở ô {state.woodChoice.slot+1} lấy gỗ, hoặc giữ {own.plots[state.woodChoice.slot]?.remaining} điểm gốc.</p><p>3 gỗ = 1 rào. Sau {formatTime((state.woodChoice.endsAt-now)/1000)} tự nhận điểm.</p><div className="garden-dialog-actions"><button className="garden-button primary" onClick={()=>dispatch({type:'wood-choice',wood:false})}>Nhận điểm</button><button className="garden-button primary" onClick={()=>dispatch({type:'wood-choice',wood:true})}>Đổi lấy 1 gỗ</button></div></>}</Modal>
+  <Modal open={cards&&!locked} onOpenChange={setCards} title="Thẻ kiếm được từ quái">{(['growth','trap'] as const).map(card=><div className="garden-support-card" key={card}><Art asset={card==='growth'?'items/fertilizer':'items/shield'}/><div><h3>{card==='growth'?'Tăng tốc':'Bẫy phản đòn'} · {own.cards[card]}</h3><p>{card==='growth'?'Giảm ngay 30% thời gian còn lại của tất cả cây đang lớn.':'Lượt trộm tiếp theo vào vườn thất bại; phản đòn lấy 20% Điểm Tổng kẻ trộm. Rào của họ vẫn giảm thiệt hại.'}</p><button className="garden-button primary" disabled={!state||ended||own.cards[card]===0||(card==='trap'?own.trap:!own.plots.some(p=>p&&p.readyAt>now))} onClick={()=>{dispatch({type:'card',card});setCards(false)}}>{card==='trap'&&own.trap?'Bẫy đã gài':'Dùng thẻ'}</button></div></div>)}<p className="garden-dialog-note">Đuổi quái đúng: 30% rơi thẻ, thiên về Tăng tốc (65%). Mỗi loại giữ tối đa 3. Bẫy dùng một lần và không cộng dồn.</p></Modal>
+  <Modal open={help&&!locked} onOpenChange={setHelp} title="Luật chơi trong 8 phút" wide><div className="garden-help-grid">{[
+   ['ui/plant','1. Trồng và hái','Cả ba loại mở ngay. Độc lập 45 giây / 120đ, Tự do 28 giây / 50đ, Hạnh phúc 16 giây / 20đ. Hái xong ô trống. Cây không tự đặt lại giờ.'],
+   ['ui/trophy','2. Điểm Tổng','Cân bằng = số quả hái ít nhất / nhiều nhất ×100. Hệ số = 0,5 + cân bằng ×0,015. Điểm gốc × hệ số là điểm xếp hạng. Trộm chuyển thẳng điểm hiển thị; điểm gốc hai bên được quy đổi tương ứng. Hệ số thay đổi sau mỗi lần hái.'],
+   ['ui/gong','3. Quái và chiêng','Chiêng là cảnh báo tự động 5 giây trước đợt quái. Quiz có 12 giây. Đúng được an toàn, sai mất 40% giá trị quả mục tiêu. Không có cây phù hợp thì không mất điểm. Từ mùa 3, giặc cấp cao có 15% cơ hội phá thêm quả Độc lập nếu bạn sai.'],
+   ['ui/steal','4. Đấu trộm','Từ mùa 2, mỗi mùa được chủ động 1 lần. Cả hai trả lời cùng câu trong 8 giây. Đúng–sai: trộm thành công 70%; cùng đúng: 30%; sai–đúng: bị phản đòn 50%; cùng sai: không chuyển điểm. Mỗi lần thành công chuyển 20% Điểm Tổng, tính lúc bắt đầu. Bị trộm vẫn được trả lời để phòng thủ.'],
+   ['ui/defense','5. Hàng rào','Hái quả có 25% cơ hội đổi quả lấy 1 gỗ . Cần 3 gỗ để xây. Rào giảm 50% thiệt hại đấu trộm, hỏng sau 3 lần thực sự chặn điểm. Rào không chặn quái.'],
+   ['items/knowledge','6. Thẻ và thời gian','Đuổi quái đúng có 30% rơi thẻ. Tăng tốc giảm 30% giờ cây còn lại; Bẫy làm kẻ trộm tiếp theo thất bại và phản đòn. Các đồng hồ vẫn chạy khi xem hướng dẫn hoặc rời tab; bỏ lỡ quiz tính là sai.'],
+  ].map(([asset,title,text])=><section key={title}><Art asset={asset as GameAsset}/><h3>{title}</h3><p>{text}</p></section>)}</div><p className="garden-dialog-note">Đây là luật mô phỏng phục vụ học tập, không phải công thức học thuật. Chơi trực tuyến với người trong phòng, hoặc chọn chơi thử với bot. Trận trực tuyến lưu trên máy chủ; giữ tab để kết nối lại. Vườn đang đấu không nhận quiz quái mới và ngược lại. Lượt trộm không được tích sang mùa sau.</p></Modal>
+  <Modal open={journal&&!locked} onOpenChange={setJournal} title="Nhật ký khu vườn"><div className="garden-history">{state?.events.map(e=><p key={e.id}><strong>{formatTime((e.at-state.startedAt)/1000)}</strong> {e.text}</p>)}</div></Modal>
+  <Modal open={resetOpen&&!locked} onOpenChange={setResetOpen} title={connection?"Rời phòng?":"Gieo lại từ đầu?"}><p>Bạn sẽ rời phiên hiện tại.</p><div className="garden-dialog-actions"><button className="garden-button muted" onClick={()=>setResetOpen(false)}>Tiếp tục</button><button className="garden-button primary" onClick={()=>{reset();setResetOpen(false);setTab('garden');}}>{connection?"Rời phòng":"Bắt đầu lại"}</button></div></Modal>
+  <Modal open={lore!==null&&!locked} onOpenChange={open=>{if(!open)setLore(null);}} title={lore===null?'':'Mùa '+(lore+1)+' · '+SEASONS[lore].name}>{lore!==null&&<div className="garden-lore"><Art asset={'seasons/season-'+(lore+1) as GameAsset}/><div><span>{SEASONS[lore].date}</span><h3>{SEASONS[lore].unlock}</h3><p>{SEASONS[lore].lore}</p></div></div>}</Modal>
+  <Modal open={inspect!==null&&!locked} onOpenChange={open=>{if(!open)setInspect(null);}} title="Cây đang lớn">{inspect!==null&&own.plots[inspect]&&<div className="garden-lore"><img src={plantAsset(own.plots[inspect]!.type,stageOf(game,own.plots[inspect]!,now))} alt="Cây đang lớn"/><div><h3>{PLANTS[own.plots[inspect]!.type].name}</h3><p>Còn {formatTime(remainingSeconds(game,own.plots[inspect]!,now))}. Giá trị quả: {own.plots[inspect]!.remaining} điểm gốc.</p><p>Hái xong mới gieo lại. Thẻ Tăng tốc giúp rút ngắn thời gian còn lại.</p></div></div>}</Modal>
+ </main>;
+}
+
